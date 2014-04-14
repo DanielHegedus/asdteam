@@ -1,35 +1,55 @@
+/**
+ * MagicPower.java
+ * 
+ * Class for managing MP
+ * 
+ * Changes:
+ * -decrease methods are now boolean
+ */
+
 package hu.asd.towerdefence;
 public class MagicPower {
-	private static int mp; //varazseronk szama
+	private static int mp=0; //varazseronk szama
 	
 	//varazsero novelese az Enemy hp-janak ertekevel
 	public static void increase(Enemy enemy) {
-		System.out.println("increase("+ enemy.getClass().getName() +")");
+		mp+=enemy.defHP;
 	}
 	
 	//csokkenti a varazserot a gem araval
-	public static void decrease(Gem gem) {
-		System.out.println("decrease("+ gem.getClass().getName() +")");
+	public static boolean decrease(Gem gem) {
+		if (mp>=gem.getCost()){
+			mp-=gem.getCost();
+			return true;
+		}
+		return false;
 	}
 	
 	//csokkenti a varazserot a tower araval
-	public static void decrease(Tower tower) {
-		System.out.println("decrease("+ tower.getClass().getName() +")");
+	public static boolean decrease(Tower tower) {
+		if (mp>=tower.getCost()){
+			mp-=tower.getCost();
+			return true;
+		}
+		return false;
 	}
 	
 	//csokkenti a varazserot a swamp araval
-	public static void decrease(Swamp swamp) {
-		System.out.println("decrease("+ swamp.getClass().getName() +")");
+	public static boolean decrease(Swamp swamp) {
+		if (mp>=swamp.getCost()){
+			mp-=swamp.getCost();
+			return true;
+		}
+		return false;
 	}
 	
 	//visszadja a varazseronk erteket 
 	public static int getMP() {
-		System.out.println("getMP()");
 		return mp;
 	}
 	
 	//beallitja az mp valtozot
 	public static void setMP(int i) {
-		System.out.println("setMP(i)");
+		mp=i;
 	}
 }

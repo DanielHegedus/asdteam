@@ -1,71 +1,96 @@
+/**Enemy.java
+ * 
+ * Base class for enemy objects
+ * 
+ * Changes since skeleton:
+ * -protected fields
+ * 
+ * */
+
 package hu.asd.towerdefence;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Enemy {
-	private int hp; //ellensegunk elete
-	private int blockTime;	// akkor mehet tovabb az ellenseg, ha ez nulla, ha mocsarba lep, akkor lesz nem nulla, igy lassul a mozgasa
-	private Road road=new Road();
-	private Road previousRoad=new Road();
-	
-	//lovi az ellensegunket a parameterben megadott tower, meghivja a doDamage-et 
+
+	protected Integer hp; // ellensegunk elete
+	protected Integer blockTime; // akkor mehet tovabb az ellenseg, ha ez nulla, ha
+	protected Integer defHP;							// mocsarba lep, akkor lesz nem nulla, igy
+								// lassul a mozgasa
+	protected Road road;
+	protected Road previousRoad;
+
+	public Enemy() {
+		blockTime = 0;
+	}
+
+	public Enemy(int hp) {
+		this();
+		this.hp = hp;
+	}
+
+	// lovi az ellensegunket a parameterben megadott tower, meghivja a
+	// doDamage-et
 	public void shoot(Tower tower) {
-		System.out.println("shoot("+ tower.getClass().getName() +")");
-		System.out.print("<-- tower.");
 		tower.doDamage(this);
 	}
-	
-	//visszaadja az ellenseg hp-jat
-	public int getHP() {
-		System.out.println("getHP");
-		System.out.println("<-- hp:int ");
-		return 10;
-	}
-	
-	//beallitja az ellenseg hp-jat
-	public void setHP(int i) {
-		System.out.println("setHP");
-	}
-	
-	//csokkenti az ellenseg hp-jat a parameterben megadott int i ertekkel
-	public void lowerHP(int i) {
-		System.out.println("lowerHP(int i)");
-		
 
+	// visszaadja az ellenseg hp-jat
+	public int getHP() {
+		return hp;
 	}
-	
-	//minden hivasnal eggyel csokkenti a blocktime-ot, visszaadja annak értékét.
+
+	// beallitja az ellenseg hp-jat
+	public void setHP(int i) {
+		hp = i;
+	}
+
+	// csokkenti az ellenseg hp-jat a parameterben megadott int i ertekkel
+	public void lowerHP(int i) {
+		hp -= i;
+		if (hp<=0){
+			//remove references
+			road.leave(this);
+		}
+	}
+
+	// minden hivasnal eggyel csokkenti a blocktime-ot, visszaadja annak
+	// értékét.
 	public int timeToMove() {
-		System.out.println("timeToMove");
-		return 0;
+		return --blockTime;
 	}
-	
-	//beallitja a blocktime valtozo erteket
-	public void setBlockTime() {
-		System.out.println("setBlockTimeP");
+
+	// beallitja a blocktime valtozo erteket
+	public void setBlockTime(int blockTime) {
+		this.blockTime = blockTime;
 	}
-	
-	//beallitja, hogy melyik uton van az ellenseg, illetve a previousRoadot is
-	public void setRoad(Road road){
-		System.out.println("setRoad");
+
+	// beallitja, hogy melyik uton van az ellenseg, illetve a previousRoadot is
+	public void setRoad(Road road) {
+		this.previousRoad = this.road;
+		this.road = road;
 	}
-	
-	
-	//visszaadja melyik uton van az ellenseg
-	public Road getRoad(){
-		System.out.println("getRoad");
+
+	// visszaadja melyik uton van az ellenseg
+	public Road getRoad() {
 		return road;
 	}
-	
-	//mozgatja az ellenséget
-	public void move(){
-		System.out.println("move");
-		//lekérdezi szomszédokat
-		System.out.print("--> road.");
-		road.getNeighbours();
-		//ezekbõl egyet kiválasztva tovább lép arra
-		Road nextRoad=new Road();
-		System.out.print("--> road.");
+
+	// mozgatja az ellenséget
+	public void move() {
 		road.leave(this);
-		System.out.print("--> nextRoad.");
-		nextRoad.enter(this);
-		
+		List<Road> validRoads = new ArrayList<Road>();
+		for (Tile t : road.getNeighbours()) {
+			if ((t.getClass() == Road.class || t.getClass() == Mordor.class) && t != previousRoad) {
+				validRoads.add((Road) t);
+			}
+		}
+		if (validRoads.size() > 1 && Math.random()<0.5) {
+			validRoads.get(1).enter(this);
+		} else if (validRoads.size()>0){
+			validRoads.get(0).enter(this);
+		}else
+			previousRoad.enter(this);
 	}
 }

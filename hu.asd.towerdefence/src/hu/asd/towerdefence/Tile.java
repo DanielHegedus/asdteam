@@ -6,15 +6,17 @@ import java.util.List;
 public abstract class Tile {
 	List<Tile> neighbours; // a szomszédokat tartalmazó lista
 	
-	//szomszedok beallitasa
-	public void setNeighbour(Tile tile) {
-		System.out.println("setNeighbour(" + tile.getClass().getName() + ")");
+	public Tile(){
+		neighbours=new ArrayList<Tile>();
 	}
 	
-	//visszaadja a szomszedokat TODO: visszateresi ertek
-	public List<Tile> getNeighbours() {
-		System.out.println("getNeighbours()");
-		
+	//szomszedok beallitasa
+	public void setNeighbour(Tile tile) {
+		neighbours.add(tile);
+	}
+	
+	//visszaadja a szomszedokat
+	public List<Tile> getNeighbours(){		
 		return neighbours;
 	}
 	

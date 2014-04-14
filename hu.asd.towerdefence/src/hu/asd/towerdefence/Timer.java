@@ -5,6 +5,6 @@ public class Timer {
 	//elinditja a timert
 	public void start() {
 		System.out.println("start()");
-		game.map.onTick();
+		game.getMap().onTick();
 	}
 }

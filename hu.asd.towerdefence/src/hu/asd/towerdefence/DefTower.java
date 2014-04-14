@@ -1,4 +1,12 @@
 package hu.asd.towerdefence;
 public class DefTower extends Tower {
-	//az alap towerunk objektuma
+
+	public DefTower(){
+		super();
+		speed=2;
+		power=1;
+		timeleft=4;
+		defTimeleft=4;
+		cost=5;
+	}
 }

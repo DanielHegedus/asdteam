@@ -1,39 +1,47 @@
+/**
+ * Road.java
+ * 
+ * Class for the roads
+ * 
+ * Changes
+ * -setEnemies removed
+ * -enemies is copyOnWriteArraylist
+ */
+
 package hu.asd.towerdefence;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Road extends Tile {
-	private List<Enemy> enemies; // a Road-on tartozkodo ellensegek listaja
+	private List<Enemy> enemies; // a Roadon tartozkodo ellensegek listaja
+	
+	public Road(){
+		enemies=new ArrayList<Enemy>();
+	}
 	
 	//ellenseg belepeset kezeli
 	public void enter(Enemy enemy) {
-		System.out.println("enter("+ enemy.getClass().getName() +")");
-		System.out.print("--> "+ enemy.getClass().getName() + ".");
+		enemies.add(enemy);
 		enemy.setRoad(this);
 	}
 	
 	//ellenseg elhagyja a Road-ot
 	public void leave(Enemy enemy) {
-		System.out.println("leave("+ enemy.getClass().getName() +")");
+		enemies.remove(enemy);
 	}
 	
 	//visszaadja a Road-on levo ellensegeket
 	public List<Enemy> getEnemies() {
-		System.out.println("getEnemies()");
 		return enemies;
 	}
 	
 	//van ellenseg a Road-on?
 	public Enemy hasEnemy() {
-		System.out.println("hasEnemy()");
-		System.out.println("<-- Enemy:enemy");
-		//ha van, visszaadjuk az elsot, egyebkent nullt.	
-		return null; 
+		if (enemies.size()>0)
+			return enemies.get(0);
+		else
+			return null;
+		
 	}
 	
-	//beallitja az ellensegeket
-	public void setEnemies(List<Enemy> enemies){
-		System.out.println("setEnemies(enemies)");
-
-	}
 }
