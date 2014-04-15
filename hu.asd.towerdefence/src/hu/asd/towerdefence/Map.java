@@ -30,15 +30,20 @@ public class Map {
 	private Road start;
 	private int size;
 	private Game game;
+	private TDActionListener listener;
 
 	public Map() {
 		setMap(new ArrayList<Tile>());
 		towers = new ArrayList<Tower>();
 	}
-	
-	public Map(Game g){
+
+	public Map(Game g) {
 		this();
-		game=g;
+		game = g;
+	}
+
+	public void addListener(TDActionListener l) {
+		listener = l;
 	}
 
 	// hozzaad a palyahoz egy uj elemet
@@ -48,11 +53,17 @@ public class Map {
 
 	// lerak egy tornyot az egyik Tile-ra
 	public void addTower(Tile tile) {
-		
+		if (tile.getClass() == Field.class) {
+			DefTower t = new DefTower();
+			t.addListener(listener);
+			t.setField((Field) tile);
+			towers.add(t);
+		}
 	}
 
 	// hozzaadunk egy uj ellenseget
 	public void addEnemy(Enemy enemy) {
+		enemy.setActionListener(listener);
 		start.enter(enemy);
 	}
 
@@ -68,40 +79,6 @@ public class Map {
 
 	// torony fejlesztese az adott fielden
 	public void upgradeTower(Field field) {
-		System.out.println("upgradeTower(Field)");
-		System.out.print(" --> map.");
-		getGem(); // elkerjuk a gem szamat
-
-		// ALT -- megnezzuk milyen gem van
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String s = "n";
-
-		while (!s.equals("spd") && !s.equals("dmg")) {
-			System.out.println(" [?] Milyen típusú Gem-ünk van? spd/dmg");
-			try {
-				s = br.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		if (s.equals("spd")) {
-			System.out.println(" --> create spdt:SpdTower");
-			SpdTower spdt = new SpdTower(); // megcsinaljuk a gyorsitott
-											// lovoereju tornyot
-			System.out.print(" --> field.");
-			field.setTower(spdt); // beallitjuk a field-re az uj tornyot
-		}
-
-		else {
-			System.out.println(" --> create dmgt:DmgTower");
-			DmgTower dmgt = new DmgTower(); // megcsinaljuk a megerositett
-											// lovoereju tornyot
-			System.out.print(" --> field.");
-			field.setTower(dmgt); // beallitjuk a fieldre az uj tornyot TODO
-		}
-
-		// ALT VEGE
 
 	}
 
@@ -116,22 +93,21 @@ public class Map {
 				}
 			}
 		}
-		
-		if (enemies.size()==0)
+
+		if (enemies.size() == 0)
 			game.gameOver(true);
-		
-		if(mordor.hasEnemy()!=null){
+
+		if (mordor.hasEnemy() != null) {
 			game.gameOver(false);
 		}
-		
-		for(Enemy e : enemies)
+
+		for (Enemy e : enemies)
 			e.move();
-		
-		for (Tower t : towers){
+
+		for (Tower t : towers) {
 			t.onTick();
 		}
-		
-		
+
 	}
 
 	// ellenorzi vannak-e meg ellensegek
@@ -158,7 +134,6 @@ public class Map {
 	public void setData(Object gamedata) {
 		System.out.println("setData(Gamedata)");
 	}
-
 
 	// mocsar hozzaadasa TODO
 	public void addSwamp(Road road) {

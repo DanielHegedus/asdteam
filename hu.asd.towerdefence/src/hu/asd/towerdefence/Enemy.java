@@ -20,6 +20,7 @@ public abstract class Enemy {
 								// lassul a mozgasa
 	protected Road road;
 	protected Road previousRoad;
+	protected TDActionListener listener;
 
 	public Enemy() {
 		blockTime = 0;
@@ -49,6 +50,7 @@ public abstract class Enemy {
 	// csokkenti az ellenseg hp-jat a parameterben megadott int i ertekkel
 	public void lowerHP(int i) {
 		hp -= i;
+		listener.onEnemyDamage(this, i);
 		if (hp<=0){
 			//remove references
 			road.leave(this);
@@ -92,5 +94,9 @@ public abstract class Enemy {
 			validRoads.get(0).enter(this);
 		}else
 			previousRoad.enter(this);
+	}
+	
+	public void setActionListener(TDActionListener listener){
+		this.listener=listener;
 	}
 }

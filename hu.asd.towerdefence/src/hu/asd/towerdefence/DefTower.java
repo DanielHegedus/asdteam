@@ -5,8 +5,8 @@ public class DefTower extends Tower {
 		super();
 		speed=2;
 		power=1;
-		timeleft=4;
-		defTimeleft=4;
+		timeleft=2;
+		defTimeleft=2;
 		cost=5;
 	}
 }

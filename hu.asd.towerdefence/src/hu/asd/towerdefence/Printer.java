@@ -23,13 +23,18 @@ public class Printer {
 	}
 
 	public static void print(Enemy e) {
-		System.out.println("[" + e.getClass().getSimpleName() + "] HP: "
+		System.out.print("[" + e.getClass().getSimpleName() + "] HP: "
 				+ e.getHP());
 	}
 
 	public static void print(Enemy e, int x, int y) {
 		System.out.println("[" + e.getClass().getSimpleName() + "] HP: "
 				+ e.getHP() + " (" + x + "," + y + ")");
+	}
+	
+	public static void print(Enemy e, String action){
+		print(e);
+		System.out.println(action);
 	}
 
 	public static void printGem(Game game) {
@@ -57,8 +62,14 @@ public class Printer {
 					System.out.print("U");
 			else if (map.get(i).getClass() == Mordor.class)
 				System.out.print("M");
-			else
-				System.out.print("-");
+			else{
+				Field f = (Field) map.get(i);
+				if (f.getTower()!=null)
+					System.out.print("X");
+				else
+					System.out.print("-");
+			}
+				
 
 			if (i % size == size - 1)
 				System.out.println();
@@ -71,5 +82,23 @@ public class Printer {
 		} catch (IOException e) {
 
 		}
+	}
+
+	public static void print(Tower t){
+		System.out.print("["+t.getClass().getSimpleName()+"]");
+	}
+	
+	public static void printShooting(Tower t, Enemy e) {
+		print(t);
+		System.out.print("shot at");
+		print(e);
+		System.out.println();
+		
+	}
+
+	public static void print(Tower t, String action) {
+		print(t);
+		System.out.println(action);
+		
 	}
 }

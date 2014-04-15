@@ -8,10 +8,11 @@ public class Main {
 	public static void main(String args[]){
 		Game game=new Game();
 		Map map = game.getMap();
+		map.addListener(new ConsoleDisplay());
 		game.init();
+		map.addTower(map.getMap().get(12));
 		Printer.print(map);
 		Printer.printEnemies(map);
-		
 		InputStreamReader i = new InputStreamReader(System.in);
 		try {
 			char[] cbuf=new char[1024];
