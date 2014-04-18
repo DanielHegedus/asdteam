@@ -51,9 +51,12 @@ public abstract class Enemy {
 	public void lowerHP(int i) {
 		hp -= i;
 		listener.onEnemyDamage(this, i);
-		if (hp<=0){
-			//remove references
+		if (hp<=0){ //death
+			MagicPower.increase(this);
+			listener.onMPGain();
+			//kill it by removing references
 			road.leave(this);
+			
 		}
 	}
 
@@ -66,6 +69,7 @@ public abstract class Enemy {
 	// beallitja a blocktime valtozo erteket
 	public void setBlockTime(int blockTime) {
 		this.blockTime = blockTime;
+		listener.onEnemyBlock(this);
 	}
 
 	// beallitja, hogy melyik uton van az ellenseg, illetve a previousRoadot is
@@ -81,10 +85,17 @@ public abstract class Enemy {
 
 	// mozgatja az ellenséget
 	public void move() {
+		
+		// if in swamp decrease blocktime and return
+		if (timeToMove()>0){
+			listener.onEnemyBlock(this);
+			return;
+		}
+		
 		road.leave(this);
 		List<Road> validRoads = new ArrayList<Road>();
 		for (Tile t : road.getNeighbours()) {
-			if ((t.getClass() == Road.class || t.getClass() == Mordor.class) && t != previousRoad) {
+			if ((t.getClass() == Road.class || t.getClass() == Mordor.class || t.getClass()==Swamp.class || t.getClass()==SuperSwamp.class) && t != previousRoad) {
 				validRoads.add((Road) t);
 			}
 		}

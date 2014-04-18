@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.List;
 
 public class Printer {
+	
+	public static void printError(String err){
+		System.out.println("ERROR: "+err);
+	}
 
 	public static void printGameOver(boolean playerWon) {
 		if (playerWon)
@@ -14,7 +18,7 @@ public class Printer {
 
 	public static void printEnemies(Map map) {
 		for (int i = 0; i < map.getMap().size(); i++) {
-			if (map.getMap().get(i).getClass() == Road.class)
+			if (map.getMap().get(i) instanceof Road)
 				if (((Road) map.getMap().get(i)).hasEnemy() != null)
 					for (Enemy e : ((Road) map.getMap().get(i)).getEnemies())
 						print(e, i % map.getSize(), i / map.getSize());
@@ -31,8 +35,8 @@ public class Printer {
 		System.out.println("[" + e.getClass().getSimpleName() + "] HP: "
 				+ e.getHP() + " (" + x + "," + y + ")");
 	}
-	
-	public static void print(Enemy e, String action){
+
+	public static void print(Enemy e, String action) {
 		print(e);
 		System.out.println(action);
 	}
@@ -40,7 +44,7 @@ public class Printer {
 	public static void printGem(Game game) {
 		String gem = "None";
 		if (game.getMap().getGem() != null)
-			gem = game.getMap().getGem().getClass().toString();
+			gem = game.getMap().getGem().getClass().getSimpleName();
 		System.out.println("[GEM] " + gem);
 	}
 
@@ -55,21 +59,28 @@ public class Printer {
 	// TODO specification
 	public static void print(List<Tile> map, int size) {
 		for (int i = 0; i < map.size(); i++) {
-			if (map.get(i).getClass() == Road.class)
-				if (((Road) map.get(i)).hasEnemy() != null)
-					System.out.print(((Road) map.get(i)).getEnemies().size());
+			Tile t = map.get(i);
+			if (t.getClass() == Road.class)
+				if (((Road) t).hasEnemy() != null)
+					System.out.print(((Road) t).getEnemies().size());
 				else
 					System.out.print("U");
-			else if (map.get(i).getClass() == Mordor.class)
+			else if (t.getClass() == Mordor.class)
 				System.out.print("M");
-			else{
+			else if (t.getClass() == Swamp.class)
+				if (((Swamp) t).hasEnemy() != null)
+					System.out.print("M");
+				else
+					System.out.print("W");
+			else if (t.getClass() == SuperSwamp.class)
+				System.out.print("S");
+			else {
 				Field f = (Field) map.get(i);
-				if (f.getTower()!=null)
+				if (f.getTower() != null)
 					System.out.print("X");
 				else
 					System.out.print("-");
 			}
-				
 
 			if (i % size == size - 1)
 				System.out.println();
@@ -84,21 +95,21 @@ public class Printer {
 		}
 	}
 
-	public static void print(Tower t){
-		System.out.print("["+t.getClass().getSimpleName()+"]");
+	public static void print(Tower t) {
+		System.out.print("[" + t.getClass().getSimpleName() + "]");
 	}
-	
+
 	public static void printShooting(Tower t, Enemy e) {
 		print(t);
 		System.out.print("shot at");
 		print(e);
 		System.out.println();
-		
+
 	}
 
 	public static void print(Tower t, String action) {
 		print(t);
 		System.out.println(action);
-		
+
 	}
 }

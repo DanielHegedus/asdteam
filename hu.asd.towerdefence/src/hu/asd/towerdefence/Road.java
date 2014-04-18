@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Road extends Tile {
-	private List<Enemy> enemies; // a Roadon tartozkodo ellensegek listaja
+	protected List<Enemy> enemies; // a Roadon tartozkodo ellensegek listaja
 	
 	public Road(){
 		enemies=new ArrayList<Enemy>();

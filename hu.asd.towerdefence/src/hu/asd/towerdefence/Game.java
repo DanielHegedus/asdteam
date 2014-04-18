@@ -18,11 +18,18 @@ public class Game {
 	private Map map;
 	private MapBuilder mapBuilder;
 	private Timer timer;
+	private TDActionListener listener;
 
 	public Game(){
 		setMap(new Map(this));
 		mapBuilder=new MapBuilder();
 		timer = new Timer();
+	}
+	
+	public Game(TDActionListener listener){
+		this();
+		this.listener=listener;
+		map.addListener(listener);
 	}
 	
 	//jatekter inicializalasa, megcsinalja a map-et
@@ -39,7 +46,10 @@ public class Game {
 	
 	//a parameterben megadott varazsko vasarlasa
 	public void buyGem(Gem gem) {
-		
+		if (MagicPower.decrease(gem)){
+			map.setGem(gem);
+		}else listener.notEnoughMP();
+			
 	}
 	
 	//jatek vege TODO

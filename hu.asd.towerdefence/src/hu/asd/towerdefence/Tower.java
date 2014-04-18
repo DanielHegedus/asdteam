@@ -19,7 +19,7 @@ public class Tower {
 	protected int speed; // lovesi sebesseg
 	protected int power; // lovesi ero
 	protected int timeleft; // ennyi ido mulva lo
-	protected int cost; // torony ara
+	protected static int cost; // torony ara
 	protected Field field; // field amin a torony van
 	protected boolean fog;
 	protected int defTimeleft;
@@ -33,36 +33,42 @@ public class Tower {
 	// sebzi a parameterkent megadott ellenseget
 	// ?
 	public void doDamage(Enemy e) {
-		e.lowerHP(power);
-	}
-
-	public void doDamage(Hobbit h) {
-		if (Math.random() < 0.2) {
-			h.getRoad().enter(new Hobbit(h.defHP / 2));
+		if (Math.random()<0.2) {
+			Enemy newEnemy;
+			try {
+				newEnemy = e.getClass().newInstance();
+				newEnemy.setActionListener(listener);
+				e.getRoad().enter(newEnemy);
+				newEnemy.setHP(e.getHP()/2);
+			} catch (InstantiationException e1) {
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				e1.printStackTrace();
+			}
+			
 		} else
-			h.lowerHP(power);
+			e.lowerHP(power);
 	}
-
-	public void doDamage(Dwarf d) {
-		if (Math.random() < 0.2) {
-			d.getRoad().enter(new Dwarf(d.defHP / 2));
-		} else
-			d.lowerHP(power);
-	}
-
-	public void doDamage(Elf e) {
-		if (Math.random() < 0.2) {
-			e.getRoad().enter(new Elf(e.defHP / 2));
+	
+	public void doDamage(Enemy e, boolean split) {
+		if (split) {
+			Enemy newEnemy;
+			try {
+				newEnemy = e.getClass().newInstance();
+				newEnemy.setActionListener(listener);
+				e.getRoad().enter(newEnemy);
+				newEnemy.setHP(e.getHP()/2);
+			} catch (InstantiationException e1) {
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				e1.printStackTrace();
+			}
+			
 		} else
 			e.lowerHP(power);
 	}
 
-	public void doDamage(Human h) {
-		if (Math.random() < 0.2) {
-			h.getRoad().enter(new Human(h.defHP / 2));
-		} else
-			h.lowerHP(power);
-	}
+
 
 	// visszaadja a torony arat
 	public int getCost() {
@@ -100,8 +106,8 @@ public class Tower {
 					listener.onTowerShooting(this, e);
 					e.shoot(this);
 					return;
-				} 
-					
+				}
+
 			}
 		} else {
 			for (Road r : neighbours) {
@@ -110,7 +116,7 @@ public class Tower {
 					listener.onTowerShooting(this, e);
 					e.shoot(this);
 					return;
-				} 
+				}
 			}
 		}
 		listener.onTowerNotShooting(this);

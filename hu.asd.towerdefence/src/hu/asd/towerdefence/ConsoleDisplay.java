@@ -1,3 +1,9 @@
+/**
+ * ConsoleDisplay.java
+ * 
+ * Basic console interface for displaying game events
+ */
+
 package hu.asd.towerdefence;
 
 public class ConsoleDisplay implements TDActionListener{
@@ -36,6 +42,35 @@ public class ConsoleDisplay implements TDActionListener{
 	public void onTowerUpgrade(Tower t) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void onEnemyBlock(Enemy e) {
+		Printer.print(e," blocked");
+		
+	}
+
+	@Override
+	public void onSwampAdded(Swamp s) {
+		System.out.println("Swamp added");
+		
+	}
+
+	@Override
+	public void notEnoughMP() {
+		Printer.printError("Not enough MP");
+		
+	}
+
+	@Override
+	public void wrongTileSelected() {
+		System.out.println("Wrong tile selected");
+		
+	}
+
+	@Override
+	public void onMPGain() {
+		Printer.printMP();		
 	}
 
 }

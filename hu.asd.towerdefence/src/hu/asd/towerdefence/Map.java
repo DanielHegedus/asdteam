@@ -33,7 +33,7 @@ public class Map {
 	private TDActionListener listener;
 
 	public Map() {
-		setMap(new ArrayList<Tile>());
+		map = new ArrayList<Tile>();
 		towers = new ArrayList<Tower>();
 	}
 
@@ -53,12 +53,24 @@ public class Map {
 
 	// lerak egy tornyot az egyik Tile-ra
 	public void addTower(Tile tile) {
-		if (tile.getClass() == Field.class) {
+		if (tile instanceof Field) {
 			DefTower t = new DefTower();
-			t.addListener(listener);
-			t.setField((Field) tile);
-			towers.add(t);
+			if (MagicPower.decrease(t)) {
+				t.addListener(listener);
+				t.setField((Field) tile);
+				towers.add(t);
+			} else {
+				listener.notEnoughMP();
+			}
+
+		} else {
+			listener.wrongTileSelected();
 		}
+	}
+
+	public void addTower(int x, int y) {
+		Tile tile = map.get(x * size + y);
+		addTower(tile);
 	}
 
 	// hozzaadunk egy uj ellenseget
@@ -69,7 +81,7 @@ public class Map {
 
 	// beallitjuk, hogy milyen gem-unk van
 	public void setGem(Gem gem) {
-		System.out.println("setGem(" + gem.getClass().getName() + ")");
+		this.gem=gem;
 	}
 
 	// visszadja a gem-unket
@@ -86,7 +98,7 @@ public class Map {
 	public void onTick() {
 		List<Enemy> enemies = new ArrayList<Enemy>();
 		for (Tile t : getMap()) {
-			if (t.getClass() == Road.class) {
+			if (t instanceof Road) {
 				Road r = (Road) t;
 				for (Enemy e : r.getEnemies()) {
 					enemies.add(e);
@@ -94,12 +106,12 @@ public class Map {
 			}
 		}
 
-		if (enemies.size() == 0)
-			game.gameOver(true);
-
 		if (mordor.hasEnemy() != null) {
 			game.gameOver(false);
 		}
+
+		if (enemies.size() == 0 && mordor.hasEnemy() == null)
+			game.gameOver(true);
 
 		for (Enemy e : enemies)
 			e.move();
@@ -135,8 +147,20 @@ public class Map {
 		System.out.println("setData(Gamedata)");
 	}
 
-	// mocsar hozzaadasa TODO
-	public void addSwamp(Road road) {
+	// mocsar hozzaadasa 
+	public void addSwamp(Tile tile) {
+		if (tile instanceof Road) {
+			Swamp s = new Swamp((Road) tile);
+			map.set(map.indexOf(tile), s);
+
+			// tell neighbouring tiles that they have a new neighbour
+			for (Tile t : s.getNeighbours()) {
+				t.setNeighbour(s);
+			}
+
+			listener.onSwampAdded(s);
+		} else
+			listener.wrongTileSelected();
 	}
 
 	// mocsar fejlesztese
@@ -156,10 +180,6 @@ public class Map {
 		return map;
 	}
 
-	public void setMap(List<Tile> map) {
-		this.map = map;
-	}
-
 	public int getSize() {
 		return size;
 	}
@@ -174,6 +194,12 @@ public class Map {
 
 	public void setMordor(Mordor mordor) {
 		this.mordor = mordor;
+	}
+
+	public void addSwamp(int x, int y) {
+		Tile tile = map.get(x * size + y);
+		addSwamp(tile);
+		
 	}
 
 }

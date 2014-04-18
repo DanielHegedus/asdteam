@@ -1,15 +1,14 @@
 package hu.asd.towerdefence;
 public class Gem {
-	private int cost; //a varazsko ara
+	protected int cost; //a varazsko ara
 	
 	//visszadja, hogy mennyibe kerul a gem
 	public int getCost() {
-		System.out.println("getCost()");
-		return 5;
+		return cost;
 	}
 	
 	//beallitja a gem arat
 	public void setCost(int i) {
-		System.out.println("setCost(i)");
+		cost = i;
 	}
 }
