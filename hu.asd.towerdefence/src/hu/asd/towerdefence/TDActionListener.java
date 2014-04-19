@@ -7,6 +7,8 @@ package hu.asd.towerdefence;
 
 public interface TDActionListener {
 	
+	public void setGame(Game game);
+	
 	/*Enemy*/
 
 	/**called when an enemy suffers damage */

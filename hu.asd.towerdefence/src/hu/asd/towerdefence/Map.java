@@ -321,7 +321,7 @@ public class Map {
 			SuperSwamp sswamp = new SuperSwamp(swamp);
 			map.set(map.indexOf(swamp), sswamp);
 			gem = null;
-			Printer.printUpgradeSwamp(this, swamp);
+			Printer.printUpgradeSwamp(this, sswamp);
 			// tell neighbouring tiles that they have a new neighbour
 			for (Tile t : sswamp.getNeighbours()) {
 				t.setNeighbour(sswamp);

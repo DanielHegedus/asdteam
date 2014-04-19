@@ -8,6 +8,12 @@ package hu.asd.towerdefence;
 
 public class ConsoleDisplay implements TDActionListener{
 
+	private Game game;
+	
+	public void setGame(Game game){
+		this.game=game;
+	}
+
 	@Override
 	public void onEnemyDamage(Enemy e,int damage) {
 		Printer.print(e," lost " + damage + " HP ");
@@ -55,7 +61,7 @@ public class ConsoleDisplay implements TDActionListener{
 
 	@Override
 	public void onSwampAdded(Swamp s) {
-		System.out.println("Swamp added");
+		Printer.print(s,"created",game.getMap());
 		
 	}
 
@@ -89,13 +95,16 @@ public class ConsoleDisplay implements TDActionListener{
 
 	@Override
 	public void onEnteredRoad(Enemy enemy, Road road) {
-		// TODO Auto-generated method stub
-		
+		Printer.print(enemy," entered ");
+		Printer.printCoords(road, game.getMap());
+		System.out.println();
 	}
 
 	@Override
 	public void onLeftRoad(Enemy enemy, Road road) {
 		Printer.print(enemy," left ");
+		Printer.printCoords(road, game.getMap());
+		System.out.println();
 		
 	}
 

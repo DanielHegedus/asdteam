@@ -36,6 +36,7 @@ public class Game {
 	public Game(TDActionListener listener) {
 		this();
 		this.listener = listener;
+		listener.setGame(this);
 
 	}
 

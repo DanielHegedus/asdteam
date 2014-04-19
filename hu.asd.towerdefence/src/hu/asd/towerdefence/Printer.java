@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Printer {
 	
+
 	public static void printError(String err){
 		System.out.println("ERROR: "+err);
 	}
@@ -37,7 +38,7 @@ public class Printer {
 
 	public static void print(Enemy e, String action) {
 		print(e);
-		System.out.println(action);
+		System.out.print(action);
 	}
 
 	public static void printGem(Game game) {
@@ -132,13 +133,24 @@ public class Printer {
 	}
 
 	public static void printUpgradeSwamp(Map m, Swamp swp) {
-		// TODO Auto-generated method stub
 		int x = (m.getMap().indexOf(swp))/m.getSize();
 		int y = (m.getMap().indexOf(swp))%m.getSize();
 		System.out.print("["+ x + ", " + y + ": Swamp");
 		System.out.print("] upgraded to ");
 		System.out.print("["+ x + ", " + y + ": SuperSwamp");
 		System.out.print("]");
+	}
+
+	public static void print(Tile t, String action, Map m) {
+		int x = (m.getMap().indexOf(t))/m.getSize();
+		int y = (m.getMap().indexOf(t))%m.getSize();
+		System.out.println("["+x+","+y+":"+t.getClass().getSimpleName()+"] " + action);		
+	}
+
+	public static void printCoords(Tile t, Map m) {
+		int x = (m.getMap().indexOf(t))/m.getSize();
+		int y = (m.getMap().indexOf(t))%m.getSize();
+		System.out.print(x+","+y);
 	}
 	
 	
