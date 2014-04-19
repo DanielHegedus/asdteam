@@ -27,13 +27,12 @@ public class Printer {
 	}
 
 	public static void print(Enemy e) {
-		System.out.print("[" + e.getClass().getSimpleName() + "] HP: "
+		System.out.print("[" +e.getId() + ":" + e.getClass().getSimpleName() + "] HP: "
 				+ e.getHP());
 	}
 
 	public static void print(Enemy e, int x, int y) {
-		System.out.println("[" + e.getClass().getSimpleName() + "] HP: "
-				+ e.getHP() + " (" + x + "," + y + ")");
+		print(e," (" + x + "," + y + ")");
 	}
 
 	public static void print(Enemy e, String action) {
@@ -112,4 +111,6 @@ public class Printer {
 		System.out.println(action);
 
 	}
+	
+	
 }

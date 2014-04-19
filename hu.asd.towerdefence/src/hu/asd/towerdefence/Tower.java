@@ -18,12 +18,14 @@ public class Tower {
 	protected List<Road> closeNeighbours;
 	protected int speed; // lovesi sebesseg
 	protected int power; // lovesi ero
-	protected int timeleft; // ennyi ido mulva lo
+	private int timeleft; // ennyi ido mulva lo
 	protected static int cost; // torony ara
 	protected Field field; // field amin a torony van
 	protected boolean fog;
 	protected int defTimeleft;
 	private TDActionListener listener;
+	private boolean split;
+	private String id;
 
 	public Tower() {
 		neighbours = new ArrayList<Road>();
@@ -33,13 +35,16 @@ public class Tower {
 	// sebzi a parameterkent megadott ellenseget
 	// ?
 	public void doDamage(Enemy e) {
-		if (Math.random()<0.2) {
+		//isSplitting added for debug purposes
+		if (Math.random()<0.2 || isSplitting()) {
+			setSplit(false);
 			Enemy newEnemy;
 			try {
 				newEnemy = e.getClass().newInstance();
 				newEnemy.setActionListener(listener);
 				e.getRoad().enter(newEnemy);
 				newEnemy.setHP(e.getHP()/2);
+				listener.onEnemyCreated(newEnemy);
 			} catch (InstantiationException e1) {
 				e1.printStackTrace();
 			} catch (IllegalAccessException e1) {
@@ -50,25 +55,6 @@ public class Tower {
 			e.lowerHP(power);
 	}
 	
-	public void doDamage(Enemy e, boolean split) {
-		if (split) {
-			Enemy newEnemy;
-			try {
-				newEnemy = e.getClass().newInstance();
-				newEnemy.setActionListener(listener);
-				e.getRoad().enter(newEnemy);
-				newEnemy.setHP(e.getHP()/2);
-			} catch (InstantiationException e1) {
-				e1.printStackTrace();
-			} catch (IllegalAccessException e1) {
-				e1.printStackTrace();
-			}
-			
-		} else
-			e.lowerHP(power);
-	}
-
-
 
 	// visszaadja a torony arat
 	public int getCost() {
@@ -91,14 +77,18 @@ public class Tower {
 		}
 
 	}
+	
+	public Field getField(){
+		return field;
+	}
 
 	public void onTick() {
-		if (timeleft > 0) {
-			timeleft -= speed;
+		if (getTimeleft() > 0) {
+			setTimeleft(getTimeleft() - speed);
 			listener.onTowerNotShooting(this);
 			return;
 		}
-		timeleft = defTimeleft;
+		setTimeleft(defTimeleft);
 		if (isInFog()) {
 			for (Road r : closeNeighbours) {
 				if (r.hasEnemy() != null) {
@@ -119,7 +109,7 @@ public class Tower {
 				}
 			}
 		}
-		listener.onTowerNotShooting(this);
+		listener.onNoEnemyInSight(this);
 	}
 
 	public boolean isInFog() {
@@ -128,6 +118,7 @@ public class Tower {
 
 	public void setFog(boolean fog) {
 		this.fog = fog;
+		listener.onTowerFog(this);
 	}
 
 	public TDActionListener getListener() {
@@ -136,5 +127,33 @@ public class Tower {
 
 	public void addListener(TDActionListener listener) {
 		this.listener = listener;
+	}
+
+	public boolean isSplitting() {
+		return split;
+	}
+
+	public void setSplit(boolean split) {
+		this.split = split;
+	}
+
+	public int getTimeleft() {
+		return timeleft;
+	}
+
+	public void setTimeleft(int timeleft) {
+		this.timeleft = timeleft;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public String toString(){
+		return "["+id+":"+this.getClass().getSimpleName()+"]";
 	}
 }

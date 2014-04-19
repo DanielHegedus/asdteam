@@ -47,5 +47,14 @@ public interface TDActionListener {
 	
 	/**called when the player gains magicpower */
 	public void onMPGain();
+
+	/**a new enemy is added to the map */
+	public void onEnemyCreated(Enemy newEnemy);
+
+	public void onNoEnemyInSight(Tower tower);
+
+	public void onEnteredRoad(Enemy enemy, Road road);
+
+	public void onLeftRoad(Enemy enemy, Road road);
 	
 }

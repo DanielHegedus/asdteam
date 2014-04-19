@@ -15,12 +15,16 @@ import java.util.List;
 public abstract class Enemy {
 
 	protected Integer hp; // ellensegunk elete
-	protected Integer blockTime; // akkor mehet tovabb az ellenseg, ha ez nulla, ha
-	protected Integer defHP;							// mocsarba lep, akkor lesz nem nulla, igy
-								// lassul a mozgasa
+	protected Integer blockTime; // number of ticks until the enemy can move
+	protected Integer defHP;
 	protected Road road;
 	protected Road previousRoad;
 	protected TDActionListener listener;
+	private int chooseRoad = 0; // option for disabling choosing random road
+								// when at crossroads, set 0 for random, 1 for
+								// left, 2 for right
+
+	private String id; // id added for easier debugging
 
 	public Enemy() {
 		blockTime = 0;
@@ -51,12 +55,12 @@ public abstract class Enemy {
 	public void lowerHP(int i) {
 		hp -= i;
 		listener.onEnemyDamage(this, i);
-		if (hp<=0){ //death
+		if (hp <= 0) { // death
 			MagicPower.increase(this);
 			listener.onMPGain();
-			//kill it by removing references
+			// kill it by removing references
 			road.leave(this);
-			
+
 		}
 	}
 
@@ -85,29 +89,57 @@ public abstract class Enemy {
 
 	// mozgatja az ellenséget
 	public void move() {
-		
+
 		// if in swamp decrease blocktime and return
-		if (timeToMove()>0){
+		if (timeToMove() > 0) {
 			listener.onEnemyBlock(this);
 			return;
 		}
-		
+
 		road.leave(this);
+		listener.onLeftRoad(this,road);
 		List<Road> validRoads = new ArrayList<Road>();
 		for (Tile t : road.getNeighbours()) {
-			if ((t.getClass() == Road.class || t.getClass() == Mordor.class || t.getClass()==Swamp.class || t.getClass()==SuperSwamp.class) && t != previousRoad) {
+			if ((t.getClass() == Road.class || t.getClass() == Mordor.class
+					|| t.getClass() == Swamp.class || t.getClass() == SuperSwamp.class)
+					&& t != previousRoad) {
 				validRoads.add((Road) t);
 			}
 		}
-		if (validRoads.size() > 1 && Math.random()<0.5) {
+		if (validRoads.size() > 1 && (Math.random() < 0.5 || chooseRoad == 1)) {
 			validRoads.get(1).enter(this);
-		} else if (validRoads.size()>0){
+			listener.onEnteredRoad(this, validRoads.get(1));
+		} else if (validRoads.size() > 0) {
 			validRoads.get(0).enter(this);
-		}else
+			listener.onEnteredRoad(this, validRoads.get(0));
+		} else {
 			previousRoad.enter(this);
+			listener.onEnteredRoad(this, previousRoad);
+		}
+		chooseRoad = 0; // turn random back on
+	}
+
+	public void setActionListener(TDActionListener listener) {
+		this.listener = listener;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public int getChooseRoad() {
+		return chooseRoad;
+	}
+
+	public void setChooseRoad(int chooseRoad) {
+		this.chooseRoad = chooseRoad;
 	}
 	
-	public void setActionListener(TDActionListener listener){
-		this.listener=listener;
+	public String toString(){
+		return "["+id+":"+this.getClass().getSimpleName()+"]";
 	}
 }

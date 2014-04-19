@@ -6,6 +6,8 @@
 
 package hu.asd.towerdefence;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -93,22 +95,19 @@ public class Parser {
 				int x = scanner.nextInt();
 				int y = scanner.nextInt();
 
-				String s = null;
-
-				if (scanner.hasNext()) {
-					s = scanner.next();
-				}
-
 				// check the optional arg
-				if (s.equals("super")) {
+				if (scanner.hasNext()) {
+					String s = scanner.next();
+					if (s.equals("super")) {
+						game.getMap().addSwamp(x, y);
+					} else if (s.equals("-noMP")) {
+						MagicPower.increase(Swamp.cost);
+						game.getMap().addSwamp(x, y);
+					} else
+						Printer.printError("Usage: addTower x y [type | -noMP]");
+				} else {
 					game.getMap().addSwamp(x, y);
-				} else if (s.equals("-noMP")) {
-					MagicPower.increase(Swamp.cost);
-					game.getMap().addSwamp(x, y);
-				} else if (s == null)
-					game.getMap().addSwamp(x, y);
-				else
-					Printer.printError("Usage: addTower x y [type | -noMP]");
+				}
 
 			} catch (NoSuchElementException e) {
 				// print out usage info if the args are not right
@@ -123,23 +122,25 @@ public class Parser {
 				s = scanner.next();
 				Gem gem = null;
 				if (s.equals("spd"))
-					gem=new SpdGem();
+					gem = new SpdGem();
 				else if (s.equals("dmg"))
-					gem=new DmgGem();
+					gem = new DmgGem();
 				else if (s.equals("swp"))
-					gem=new SwpGem();
-				else{
-					//if type is neither dmg nor spd nor swp print error and return
+					gem = new SwpGem();
+				else {
+					// if type is neither dmg nor spd nor swp print error and
+					// return
 					Printer.printError("Type can be spd, dmg or swp");
 					scanner.close();
 					return;
 				}
-				
-				if (scanner.hasNext() && scanner.next().equals("-noMP")){
+
+				// if -noMP given add the cost of the gem to MP
+				if (scanner.hasNext() && scanner.next().equals("-noMP")) {
 					MagicPower.increase(gem.getCost());
 				}
 				game.buyGem(gem);
-				
+
 			} else {
 				Printer.printError("Usage: buyGem type [-noMP]. Type can be spd, dmg or swp");
 			}
@@ -168,9 +169,199 @@ public class Parser {
 				Printer.printError("Usage: setMP mp");
 			}
 			break;
-			
+
+		// displaying the current gem
 		case "getGem":
 			Printer.printGem(game);
+			break;
+
+		// shooting with a tower
+		case "shoot":
+			try {
+				int x = scanner.nextInt();
+				int y = scanner.nextInt();
+
+				// get the x,y tile
+				int size = game.getMap().getSize();
+				Tile t = game.getMap().getMap().get(x * size + y);
+				Tower tower;
+
+				// check if there is a tower on the tile
+				if (t instanceof Field && ((Field) t).getTower() != null) {
+					tower = ((Field) t).getTower();
+				} else {
+					// return if not
+					Printer.printError("Selected tile doesn't have a tower");
+					scanner.close();
+					return;
+				}
+
+				// check for other args
+
+				// initialize to avoid nullPointerException
+				String arg1 = "", arg2 = "";
+
+				if (scanner.hasNext()) {
+					arg1 = scanner.next();
+					if (scanner.hasNext())
+						arg2 = scanner.next();
+				}
+
+				// check the args
+				if (arg1.equals("-split") || arg2.equals("-split"))
+					tower.setSplit(true);
+				if (arg1.equals("-force") || arg2.equals("-force"))
+					tower.setTimeleft(0);
+
+				// shoot
+				tower.onTick();
+
+			} catch (NoSuchElementException e) {
+				Printer.printError("Usage: shoot x y [-split] [-force]");
+			}
+			break;
+
+		case "placeEnemy":
+			try {
+				int x = scanner.nextInt();
+				int y = scanner.nextInt();
+				String type = scanner.next();
+				Enemy e = null;
+
+				switch (type) {
+				case "hobbit":
+					e = new Hobbit();
+					break;
+				case "elf":
+					e = new Elf();
+					break;
+				case "human":
+					e = new Human();
+					break;
+				case "dwarf":
+					e = new Dwarf();
+					break;
+				default:
+					Printer.printError("Possible values for type are: hobbit,human,elf,dwarf");
+					scanner.close();
+					return;
+				}
+
+				Tile t = getTile(x, y);
+
+				if (t instanceof Road) {
+					((Road) t).enter(e);
+				} else
+					Printer.printError("Enemies can only be placed on roads");
+
+			} catch (Exception e) {
+				Printer.printError("Usage: placeEnemy x y type");
+			}
+			break;
+
+		case "setFog":
+			try {
+				int x = scanner.nextInt();
+				int y = scanner.nextInt();
+
+				Tower t = getTowerOnField(x, y);
+
+				if (t != null) {
+					t.setFog(true);
+				} else
+					Printer.printError("There is no tower on the selected tile");
+
+			} catch (NoSuchElementException e) {
+				Printer.printError("Usage: setFog x y");
+			}
+
+			break;
+
+		case "removeFog":
+			try {
+				int x = scanner.nextInt();
+				int y = scanner.nextInt();
+
+				Tower t = getTowerOnField(x, y);
+
+				if (t != null) {
+					t.setFog(false);
+				} else
+					Printer.printError("There is no tower on the selected tile");
+
+			} catch (NoSuchElementException e) {
+				Printer.printError("Usage: setFog x y");
+			}
+
+			break;
+
+		// damaging an enemy
+		case "damageEnemy":
+			String id = null;
+			int damage = 0;
+
+			// if there is an argument and it is not an integer it must be the
+			// id
+			if (scanner.hasNext() && !scanner.hasNextInt())
+				id = scanner.next();
+
+			// if there is an int it must be the damage
+			if (scanner.hasNextInt()) {
+				damage = scanner.nextInt();
+			}
+
+			// if no id was given damage all
+			if (id == null) {
+				if (damage != 0) {
+					for (Enemy e : getEnemies()) {
+						e.lowerHP(damage);
+					}
+				} else {
+					// if no damage was given kill all
+					for (Enemy e : getEnemies()) {
+						e.lowerHP(e.getHP());
+					}
+				}
+			} else {
+				Enemy e = getEnemyById(id);
+				if (e != null) {
+					if (damage != 0)
+						e.lowerHP(damage);
+					else
+						e.lowerHP(e.getHP());
+				} else
+					Printer.printError("No such enemy");
+
+			}
+
+			break;
+
+		case "move":
+			if (scanner.hasNext()){
+				Enemy e=getEnemyById(scanner.next());
+				if (e!=null){
+					if (scanner.hasNext()){
+						int r = scanner.nextInt();
+						e.setChooseRoad(r);
+					}
+						e.move();
+				}else
+					Printer.printError("No such enemy");
+			}else
+				Printer.printError("Usage: move enemyID [direction]");
+
+			break;
+			
+		case "enterMordor":
+			if (scanner.hasNext()){
+				Enemy e = getEnemyById(scanner.next());
+				if (e!=null){
+					e.getRoad().leave(e);
+					game.getMap().getMordor().enter(e);
+				}Printer.printError("No such enemy");
+			}else 
+				Printer.printError("Usage: enterMordor enemyID");
+			
 			break;
 
 		case "exit":
@@ -180,9 +371,51 @@ public class Parser {
 
 		// if the input didn't match any command
 		default:
-			System.out.println("No such command: " + cmd);
+			Printer.printError("No such command: " + cmd);
 		}
 
 		scanner.close();
+	}
+
+	private Tower getTowerOnField(int x, int y) {
+		Tile t = getTile(x, y);
+		if (t instanceof Field) {
+			return ((Field) t).getTower();
+		}
+		return null;
+	}
+
+	private Tile getTile(int x, int y) {
+		int size = game.getMap().getSize();
+		return game.getMap().getMap().get(x * size + y);
+	}
+
+	private Enemy getEnemyById(String id) {
+		for (Enemy e : getEnemies()) {
+			if (e.getId().equals(id))
+				return e;
+		}
+
+		return null;
+	}
+
+	private List<Enemy> getEnemies() {
+		List<Enemy> enemies = new ArrayList<Enemy>();
+		for (Tile t : game.getMap().getMap()) {
+			if (t instanceof Road) {
+				Road r = (Road) t;
+				for (Enemy e : r.getEnemies()) {
+					enemies.add(e);
+				}
+			}
+		}
+		return enemies;
+	}
+
+	private String getTowerId(Tower t) {
+		int index = game.getMap().getMap().indexOf(t.getField());
+		int size = game.getMap().getSize();
+		String s = index / size + "," + index % size;
+		return s;
 	}
 }

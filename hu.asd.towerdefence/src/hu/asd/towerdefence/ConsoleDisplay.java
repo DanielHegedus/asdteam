@@ -22,7 +22,10 @@ public class ConsoleDisplay implements TDActionListener{
 
 	@Override
 	public void onTowerFog(Tower t) {
-		// TODO Auto-generated method stub
+		if (t.isInFog()){
+			Printer.print(t,"is in fog");
+		}else
+			Printer.print(t,"is no longer in fog");
 		
 	}
 
@@ -71,6 +74,29 @@ public class ConsoleDisplay implements TDActionListener{
 	@Override
 	public void onMPGain() {
 		Printer.printMP();		
+	}
+
+	@Override
+	public void onEnemyCreated(Enemy newEnemy) {
+		Printer.print(newEnemy," created");
+	}
+
+	@Override
+	public void onNoEnemyInSight(Tower tower) {
+		Printer.print(tower," no enemy in sight");
+		
+	}
+
+	@Override
+	public void onEnteredRoad(Enemy enemy, Road road) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onLeftRoad(Enemy enemy, Road road) {
+		Printer.print(enemy," left ");
+		
 	}
 
 }

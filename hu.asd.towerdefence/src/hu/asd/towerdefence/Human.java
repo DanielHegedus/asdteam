@@ -9,10 +9,14 @@
 package hu.asd.towerdefence;
 public class Human extends Enemy {
 
+	private static int idNo = 0;
+	
 	public Human(){
 		super();
 		hp=10;
 		defHP=10;
+		idNo++;
+		setId("u"+idNo);
 	}
 
 	public Human(int i) {

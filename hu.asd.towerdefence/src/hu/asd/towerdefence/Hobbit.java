@@ -9,10 +9,14 @@
 package hu.asd.towerdefence;
 public class Hobbit extends Enemy {
 
+	private static int idNo = 0;
+	
 	public Hobbit(){
 		super();
 		hp=5;
 		defHP=5;
+		idNo++;
+		setId("h"+idNo);
 	}
 
 	public Hobbit(int i) {
