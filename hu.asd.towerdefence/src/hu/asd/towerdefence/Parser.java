@@ -396,6 +396,20 @@ public class Parser {
 			}
 			break;
 
+		case "save":
+			if (scanner.hasNext()){
+				game.save(scanner.next());
+			}else
+				Printer.printError("Usage: save fileName");
+			break;
+			
+		case "load":
+			if (scanner.hasNext()){
+				game.load(scanner.next());
+			}else
+				Printer.printError("Usage: save fileName");
+			break;
+			
 		case "exit":
 			scanner.close();
 			System.exit(0);

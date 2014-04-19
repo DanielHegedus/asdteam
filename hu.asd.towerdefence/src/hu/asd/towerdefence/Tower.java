@@ -9,21 +9,22 @@
 
 package hu.asd.towerdefence;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tower {
+public class Tower implements Serializable{
 
-	protected List<Road> neighbours; // lista a torony koruli utakrol
-	protected List<Road> closeNeighbours;
+	protected transient List<Road> neighbours; // lista a torony koruli utakrol
+	protected transient List<Road> closeNeighbours;
 	protected int speed; // lovesi sebesseg
 	protected int power; // lovesi ero
 	private int timeleft; // ennyi ido mulva lo
 	protected int cost; // torony ara
-	protected Field field; // field amin a torony van
+	protected transient Field field; // field amin a torony van
 	protected boolean fog;
 	protected int defTimeleft;
-	private TDActionListener listener;
+	private transient TDActionListener listener;
 	private boolean split;
 	private String id;
 
@@ -63,6 +64,12 @@ public class Tower {
 
 	// beallitja a fieldet amin a torony lesz
 	public void setField(Field f) {
+		if (neighbours == null)
+			neighbours=new ArrayList<Road>();
+		
+		if (closeNeighbours == null)
+			closeNeighbours=new ArrayList<Road>();
+		
 		this.field = f;
 		field.setTower(this);
 		for (Tile tl : field.getNeighbours()) {

@@ -9,17 +9,18 @@
 
 package hu.asd.towerdefence;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Enemy {
+public abstract class Enemy implements Serializable{
 
 	protected Integer hp; // ellensegunk elete
 	protected Integer blockTime; // number of ticks until the enemy can move
 	protected Integer defHP;
-	protected Road road;
-	protected Road previousRoad;
-	protected TDActionListener listener;
+	protected transient Road road;
+	protected transient Road previousRoad;
+	protected transient TDActionListener listener;
 	private int chooseRoad = 0; // option for disabling choosing random road
 								// when at crossroads, set 0 for random, 1 for
 								// left, 2 for right

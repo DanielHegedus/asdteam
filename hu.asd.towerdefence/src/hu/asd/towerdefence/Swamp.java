@@ -5,7 +5,10 @@
  */
 
 package hu.asd.towerdefence;
-public class Swamp extends Road {
+
+import java.io.Serializable;
+
+public class Swamp extends Road implements Serializable{
 	
 	protected int power;	//mocsarunk lassito ereje
 	protected static int cost=5;	//mocsarunk ara

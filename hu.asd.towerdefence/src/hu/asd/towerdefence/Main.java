@@ -18,8 +18,9 @@ public class Main {
 				parser.parse(reader.readLine());
 
 			} catch (Exception e) {
-				Printer.printError(e.getMessage());
-				System.out.println("Be sure to call initGame before testing");
+//				Printer.printError(e.getMessage());
+//				System.out.println("Be sure to call initGame before testing");
+				e.printStackTrace();
 			}
 		}
 	}

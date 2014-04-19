@@ -1,5 +1,8 @@
 package hu.asd.towerdefence;
-public class Gem {
+
+import java.io.Serializable;
+
+public class Gem implements Serializable{
 	protected int cost; //a varazsko ara
 	
 	//visszadja, hogy mennyibe kerul a gem

@@ -13,12 +13,10 @@
 
 package hu.asd.towerdefence;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 public class Map {
 
@@ -34,7 +32,7 @@ public class Map {
 
 	public Map() {
 		map = new ArrayList<Tile>();
-		towers = new ArrayList<Tower>();
+		setTowers(new ArrayList<Tower>());
 	}
 
 	public Map(Game g) {
@@ -58,7 +56,7 @@ public class Map {
 			if (MagicPower.decrease(t)) {
 				t.addListener(listener);
 				t.setField((Field) tile);
-				towers.add(t);
+				getTowers().add(t);
 			} else {
 				listener.notEnoughMP();
 			}
@@ -111,7 +109,7 @@ public class Map {
 		for (Enemy e : enemies)
 			e.move();
 
-		for (Tower t : towers) {
+		for (Tower t : getTowers()) {
 			t.onTick();
 		}
 
@@ -132,14 +130,93 @@ public class Map {
 
 	// TODO
 	public GameData getData() {
-		System.out.println("getData()");
-		return new GameData();
+		// creating a new gamedata object
+		GameData gd = new GameData();
 
+		// setting the MP and gem
+		gd.setMP(MagicPower.getMP());
+		gd.setGem(gem);
+
+		// adding the enemies
+		List<Enemy> enemyList = new ArrayList<Enemy>();
+
+		for (Tile t : map) {
+			if (t instanceof Road) {
+				Road r = (Road) t;
+				for (Enemy e : r.getEnemies()) {
+					enemyList.add(e);
+				}
+			}
+		}
+
+		for (Enemy e : enemyList) {
+			int[] pos = new int[2];
+			pos[0] = map.indexOf(e.getRoad()) / size;
+			pos[1] = map.indexOf(e.getRoad()) % size;
+			gd.addEnemy(pos, e);
+		}
+
+		// adding the towers
+		for (Tower t : towers) {
+			int[] pos = new int[2];
+			pos[0] = map.indexOf(t.getField()) / size;
+			pos[1] = map.indexOf(t.getField()) % size;
+			gd.addTower(pos, t);
+		}
+
+		// adding swamps
+		for (Tile t : map) {
+			if (t instanceof Swamp) {
+				int[] pos = new int[2];
+				pos[0] = map.indexOf(t) / size;
+				pos[1] = map.indexOf(t) % size;
+				gd.addSwamp(pos, (Swamp) t);
+			}
+		}
+
+		return gd;
 	}
 
 	// TODO
-	public void setData(Object gamedata) {
-		System.out.println("setData(Gamedata)");
+	public void setData(GameData gd) {
+		// restoring the enemies
+		for (Entry<int[], Enemy> entry : gd.getEnemies().entrySet()) {
+			// get the values
+			int[] pos = entry.getKey();
+			Enemy e = entry.getValue();
+			// get the tile
+			Tile t = map.get(pos[0] * size + pos[1]);
+			// add the enemy
+			((Road) t).enter(e);
+		}
+
+		// the towers
+		for (Entry<int[], Tower> entry : gd.getTowers().entrySet()) {
+			int[] pos = entry.getKey();
+			Tower tower = entry.getValue();
+			Tile t = map.get(pos[0] * size + pos[1]);
+			Field f = (Field) t;
+			tower.setField(f);
+			towers.add(tower);
+		}
+
+		// the swamps
+		for (Entry<int[], Swamp> entry : gd.getSwamps().entrySet()) {
+			int[] pos = entry.getKey();
+			Swamp s = entry.getValue();
+			Tile t = map.get(pos[0] * size + pos[1]);
+			map.set(pos[0] * size + pos[1], s);
+			// tell neighbouring tiles that they have a new neighbour
+			for (Tile tl : s.getNeighbours()) {
+				tl.setNeighbour(s);
+			}
+		}
+		
+		//set the MP
+		MagicPower.setMP(gd.getMp());
+		
+		//set the gem
+		gem=gd.getGem();
 	}
 
 	// mocsar hozzaadasa
@@ -242,6 +319,14 @@ public class Map {
 	public void upgradeTower(int x, int y) {
 		Tile tile = map.get(x * size + y);
 		upgradeTower((Field) tile);
+	}
+
+	public List<Tower> getTowers() {
+		return towers;
+	}
+
+	public void setTowers(List<Tower> towers) {
+		this.towers = towers;
 	}
 
 }
