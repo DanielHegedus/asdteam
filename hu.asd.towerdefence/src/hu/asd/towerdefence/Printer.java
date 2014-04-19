@@ -119,5 +119,27 @@ public class Printer {
 
 	}
 	
+	//print out which tower upgraded to 
+	public static void printUpgradeTower(Tower prevT, Tower upT, Map m, Field f){
+		int x = (m.getMap().indexOf(f))/m.getSize();
+		int y = (m.getMap().indexOf(f))%m.getSize();
+		System.out.print("["+ x + ", " + y + ": ");
+		print(prevT);
+		System.out.print("] upgraded to ");
+		System.out.print("["+ x + ", " + y + ": ");
+		print(upT);
+		System.out.print("]");
+	}
+
+	public static void printUpgradeSwamp(Map m, Swamp swp) {
+		// TODO Auto-generated method stub
+		int x = (m.getMap().indexOf(swp))/m.getSize();
+		int y = (m.getMap().indexOf(swp))%m.getSize();
+		System.out.print("["+ x + ", " + y + ": Swamp");
+		System.out.print("] upgraded to ");
+		System.out.print("["+ x + ", " + y + ": SuperSwamp");
+		System.out.print("]");
+	}
+	
 	
 }

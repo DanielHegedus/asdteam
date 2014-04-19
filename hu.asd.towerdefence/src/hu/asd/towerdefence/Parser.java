@@ -383,8 +383,6 @@ public class Parser {
 					MagicPower.setMP(20);
 					game.buyGem(new SpdGem());
 					game.getMap().upgradeTower(x, y);
-					System.out.println("[" + x + "," + y + ":"
-							+ "ide rakd be a towert" + "] upgraded to anyad");
 				} else if (st.equals("dmg")) {
 					MagicPower.setMP(20);
 					game.buyGem(new DmgGem());
@@ -393,6 +391,32 @@ public class Parser {
 			} catch (NoSuchElementException e) {
 				// print out usage info if the args are not right
 				System.out.println("Usage: upgradeTower x y [type]");
+			}
+			break;
+			
+		case "upgradeSwamp":
+				try {
+					int x = scanner.nextInt();
+					int y = scanner.nextInt();
+
+					String st = "";
+
+					if (scanner.hasNext()) {
+						st = scanner.next();
+					}
+					
+					if(st.equals("-nogem")){
+						MagicPower.setMP(20);
+						game.buyGem(new SwpGem());
+						game.getMap().upgradeSwamp(x,y);
+					}
+					else if(st.equals("")) {
+						game.getMap().upgradeSwamp(x,y);
+					}
+					
+			} catch (NoSuchElementException e) {
+				// print out usage info if the args are not right
+				Printer.printError("Usage: upgradeSwamp x y [-noMP]");
 			}
 			break;
 
