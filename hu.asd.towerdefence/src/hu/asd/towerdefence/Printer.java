@@ -75,10 +75,17 @@ public class Printer {
 				System.out.print("S");
 			else {
 				Field f = (Field) map.get(i);
-				if (f.getTower() != null)
-					System.out.print("X");
+				if (f.getTower() != null){
+					if(f.getTower() instanceof DmgTower)
+						System.out.print("D");
+					else if(f.getTower() instanceof SpdTower)
+						System.out.print("P");
+					else
+						System.out.print("X");
+				}
 				else
 					System.out.print("-");
+
 			}
 
 			if (i % size == size - 1)

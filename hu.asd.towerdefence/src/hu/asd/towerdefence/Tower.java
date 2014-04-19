@@ -19,7 +19,7 @@ public class Tower {
 	protected int speed; // lovesi sebesseg
 	protected int power; // lovesi ero
 	private int timeleft; // ennyi ido mulva lo
-	protected static int cost; // torony ara
+	protected int cost; // torony ara
 	protected Field field; // field amin a torony van
 	protected boolean fog;
 	protected int defTimeleft;

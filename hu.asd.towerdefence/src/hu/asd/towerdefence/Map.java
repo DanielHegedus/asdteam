@@ -81,17 +81,12 @@ public class Map {
 
 	// beallitjuk, hogy milyen gem-unk van
 	public void setGem(Gem gem) {
-		this.gem=gem;
+		this.gem = gem;
 	}
 
 	// visszadja a gem-unket
 	public Gem getGem() {
 		return gem;
-	}
-
-	// torony fejlesztese az adott fielden
-	public void upgradeTower(Field field) {
-
 	}
 
 	// minden tickre lefuto metodus
@@ -147,7 +142,7 @@ public class Map {
 		System.out.println("setData(Gamedata)");
 	}
 
-	// mocsar hozzaadasa 
+	// mocsar hozzaadasa
 	public void addSwamp(Tile tile) {
 		if (tile instanceof Road) {
 			Swamp s = new Swamp((Road) tile);
@@ -161,11 +156,6 @@ public class Map {
 			listener.onSwampAdded(s);
 		} else
 			listener.wrongTileSelected();
-	}
-
-	// mocsar fejlesztese
-	public void upgradeSwamp(Swamp swamp) {
-		System.out.println("upgradeSwamp(" + swamp.getClass().getName() + ")");
 	}
 
 	public Road getStart() {
@@ -199,7 +189,59 @@ public class Map {
 	public void addSwamp(int x, int y) {
 		Tile tile = map.get(x * size + y);
 		addSwamp(tile);
-		
+
+	}
+
+	// torony fejlesztese az adott fielden
+	public void upgradeTower(Field field) {
+		// fejlesztes SpdTowerre
+		if (this.gem instanceof SpdGem) {
+			if (field.getTower() != null) {
+				SpdTower st = new SpdTower();
+				st.setField(field);
+				field.setTower(st);
+				gem = null;
+			} else {
+				Printer.printError("There is no tower on this field");
+			}
+		}
+		// fejlesztes DmgTowerre
+		else if (this.gem instanceof DmgGem) {
+			if (field.getTower() != null) {
+				DmgTower dt = new DmgTower();
+				dt.setField(field);
+				field.setTower(dt);
+				gem = null;
+			} else {
+				Printer.printError("There is no tower on this field");
+			}
+		} else {
+			Printer.printError("There is no gem for tower upgrade."
+					+ "You can buy gems with the buyGem command.");
+		}
+
+	}
+
+	// mocsar fejlesztese
+	public void upgradeSwamp(Swamp swamp) {
+		// System.out.println("upgradeSwamp(" + swamp.getClass().getName() +
+		// ")");
+		if (this.gem instanceof SwpGem) {
+			SuperSwamp sswamp = new SuperSwamp(swamp);
+			map.set(map.indexOf(swamp), sswamp);
+
+			// tell neighbouring tiles that they have a new neighbour
+			for (Tile t : sswamp.getNeighbours()) {
+				t.setNeighbour(sswamp);
+			}
+		} else {
+			Printer.printError("There is no gem for swamp upgrade.");
+		}
+	}
+
+	public void upgradeTower(int x, int y) {
+		Tile tile = map.get(x * size + y);
+		upgradeTower((Field) tile);
 	}
 
 }

@@ -78,7 +78,8 @@ public class Parser {
 				} else if (s.equals("dmg")) {
 					game.getMap().addTower(x, y);
 				} else if (s.equals("-noMP")) {
-					MagicPower.increase(DefTower.cost);
+					DefTower tmp = new DefTower();
+					MagicPower.increase(tmp.getCost());
 					game.getMap().addTower(x, y);
 
 				} else
@@ -104,14 +105,14 @@ public class Parser {
 						MagicPower.increase(Swamp.cost);
 						game.getMap().addSwamp(x, y);
 					} else
-						Printer.printError("Usage: addTower x y [type | -noMP]");
+						Printer.printError("Usage: addSwamp x y [type | -noMP]");
 				} else {
 					game.getMap().addSwamp(x, y);
 				}
 
 			} catch (NoSuchElementException e) {
 				// print out usage info if the args are not right
-				Printer.printError("Usage: addTower x y [type | -noMP]");
+				Printer.printError("Usage: addSwamp x y [type | -noMP]");
 			}
 			break;
 
@@ -337,31 +338,62 @@ public class Parser {
 			break;
 
 		case "move":
-			if (scanner.hasNext()){
-				Enemy e=getEnemyById(scanner.next());
-				if (e!=null){
-					if (scanner.hasNext()){
+			if (scanner.hasNext()) {
+				Enemy e = getEnemyById(scanner.next());
+				if (e != null) {
+					if (scanner.hasNext()) {
 						int r = scanner.nextInt();
 						e.setChooseRoad(r);
 					}
-						e.move();
-				}else
+					e.move();
+				} else
 					Printer.printError("No such enemy");
-			}else
+			} else
 				Printer.printError("Usage: move enemyID [direction]");
 
 			break;
-			
+
 		case "enterMordor":
-			if (scanner.hasNext()){
+			if (scanner.hasNext()) {
 				Enemy e = getEnemyById(scanner.next());
-				if (e!=null){
+				if (e != null) {
 					e.getRoad().leave(e);
 					game.getMap().getMordor().enter(e);
-				}Printer.printError("No such enemy");
-			}else 
+				}
+				Printer.printError("No such enemy");
+			} else
 				Printer.printError("Usage: enterMordor enemyID");
-			
+
+			break;
+
+		case "upgradeTower":
+			try {
+				int x = scanner.nextInt();
+				int y = scanner.nextInt();
+
+				String st = "";
+
+				if (scanner.hasNext()) {
+					st = scanner.next();
+				}
+
+				if (st.equals("")) {
+					game.getMap().upgradeTower(x, y);
+				} else if (st.equals("spd")) {
+					MagicPower.setMP(20);
+					game.buyGem(new SpdGem());
+					game.getMap().upgradeTower(x, y);
+					System.out.println("[" + x + "," + y + ":"
+							+ "ide rakd be a towert" + "] upgraded to anyad");
+				} else if (st.equals("dmg")) {
+					MagicPower.setMP(20);
+					game.buyGem(new DmgGem());
+					game.getMap().upgradeTower(x, y);
+				}
+			} catch (NoSuchElementException e) {
+				// print out usage info if the args are not right
+				System.out.println("Usage: upgradeTower x y [type]");
+			}
 			break;
 
 		case "exit":
