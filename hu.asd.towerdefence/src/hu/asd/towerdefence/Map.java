@@ -118,7 +118,6 @@ public class Map {
 	}
 
 	// ellenorzi vannak-e meg ellensegek
-
 	public boolean checkEnemies() {
 		for (Tile t : getMap()) {
 			if (t.getClass() == Road.class) {
@@ -186,10 +185,20 @@ public class Map {
 		this.mordor = mordor;
 	}
 
+	//koordinatak azonositasa a palyan, majd tovabbadni az upgradenek az azonositott roadot
 	public void addSwamp(int x, int y) {
 		Tile tile = map.get(x * size + y);
-		addSwamp(tile);
-
+		if(tile instanceof Road)
+			addSwamp(tile);
+		else Printer.printError("You can't put a swamp there.");
+	}
+	
+	//koordinatak azonositasa a palyan, majd tovabbadni az upgradenek az azonositott swampot
+	public void upgradeSwamp(int x, int y){
+		Tile tile = map.get(x * size + y);
+		if(tile instanceof Swamp)
+			upgradeSwamp((Swamp)tile);
+		else Printer.printError("No swamp there to upgrade.");
 	}
 
 	// torony fejlesztese az adott fielden
@@ -197,10 +206,12 @@ public class Map {
 		// fejlesztes SpdTowerre
 		if (this.gem instanceof SpdGem) {
 			if (field.getTower() != null) {
+				Tower prevT = field.getTower();
 				SpdTower st = new SpdTower();
 				st.setField(field);
 				field.setTower(st);
 				gem = null;
+				Printer.printUpgradeTower(prevT, st, this, field);	//prints the output
 			} else {
 				Printer.printError("There is no tower on this field");
 			}
@@ -208,16 +219,19 @@ public class Map {
 		// fejlesztes DmgTowerre
 		else if (this.gem instanceof DmgGem) {
 			if (field.getTower() != null) {
+				Tower prevT = field.getTower();
 				DmgTower dt = new DmgTower();
 				dt.setField(field);
 				field.setTower(dt);
 				gem = null;
+				Printer.printUpgradeTower(prevT, dt, this, field); // prints the output
 			} else {
 				Printer.printError("There is no tower on this field");
 			}
 		} else {
 			Printer.printError("There is no gem for tower upgrade."
-					+ "You can buy gems with the buyGem command.");
+					+ " You can buy gems with the buyGem command"
+					+ " or use 'dmg' or 'spd' after the command to upgrade the tower without gem.");
 		}
 
 	}
@@ -229,19 +243,24 @@ public class Map {
 		if (this.gem instanceof SwpGem) {
 			SuperSwamp sswamp = new SuperSwamp(swamp);
 			map.set(map.indexOf(swamp), sswamp);
-
+			gem = null;
+			Printer.printUpgradeSwamp(this, swamp);
 			// tell neighbouring tiles that they have a new neighbour
 			for (Tile t : sswamp.getNeighbours()) {
 				t.setNeighbour(sswamp);
 			}
 		} else {
-			Printer.printError("There is no gem for swamp upgrade.");
+			Printer.printError("There is no gem for swamp upgrade."
+					+ "Try the upgradeSwamp x y -nogem command or buy gem with 'buyGem swp'.");
 		}
 	}
 
 	public void upgradeTower(int x, int y) {
 		Tile tile = map.get(x * size + y);
-		upgradeTower((Field) tile);
+		if(tile instanceof Field)
+			upgradeTower((Field) tile);
+		else
+			Printer.printError("This is not a field. You can't put tower there.");	
 	}
 
 }
