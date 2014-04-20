@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class Swamp extends Road implements Serializable{
 	
 	protected int power;	//mocsarunk lassito ereje
+	private TDActionListener listener;
 	protected static int cost=5;	//mocsarunk ara
 	
 	public Swamp(){
@@ -28,8 +29,9 @@ public class Swamp extends Road implements Serializable{
 	
 	@Override
 	public void enter(Enemy e){
-		block(e); 
 		super.enter(e);
+		block(e); 
+		
 	}
 
 	//blockolja az ellensegunk tovabbhaladasat bizonyos ideig
@@ -41,4 +43,6 @@ public class Swamp extends Road implements Serializable{
 	public int getCost() {
 		return cost;
 	}
+
+	
 }

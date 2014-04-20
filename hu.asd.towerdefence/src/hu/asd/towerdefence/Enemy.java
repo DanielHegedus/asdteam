@@ -123,6 +123,10 @@ public abstract class Enemy implements Serializable{
 	public void setActionListener(TDActionListener listener) {
 		this.listener = listener;
 	}
+	
+	public TDActionListener getActionListener(){
+		return listener;
+	}
 
 	public String getId() {
 		return id;

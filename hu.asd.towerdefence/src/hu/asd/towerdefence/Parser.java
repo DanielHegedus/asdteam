@@ -251,8 +251,8 @@ public class Parser {
 				Tile t = getTile(x, y);
 
 				if (t instanceof Road) {
-					((Road) t).enter(e);
-				} else
+					((Road)t).enter(e);
+				}else
 					Printer.printError("Enemies can only be placed on roads");
 
 			} catch (Exception e) {

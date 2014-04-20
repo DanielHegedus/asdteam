@@ -210,26 +210,30 @@ public class Map {
 				tl.setNeighbour(s);
 			}
 		}
-		
-		//set the MP
+
+		// set the MP
 		MagicPower.setMP(gd.getMp());
-		
-		//set the gem
-		gem=gd.getGem();
+
+		// set the gem
+		gem = gd.getGem();
 	}
 
 	// mocsar hozzaadasa
 	public void addSwamp(Tile tile) {
 		if (tile instanceof Road) {
 			Swamp s = new Swamp((Road) tile);
-			map.set(map.indexOf(tile), s);
+			s.setListener(listener);
+			if (MagicPower.decrease(s)) {
+				map.set(map.indexOf(tile), s);
 
-			// tell neighbouring tiles that they have a new neighbour
-			for (Tile t : s.getNeighbours()) {
-				t.setNeighbour(s);
-			}
+				// tell neighbouring tiles that they have a new neighbour
+				for (Tile t : s.getNeighbours()) {
+					t.setNeighbour(s);
+				}
 
-			listener.onSwampAdded(s);
+				listener.onSwampAdded(s);
+			}else
+				listener.notEnoughMP();
 		} else
 			listener.wrongTileSelected();
 	}
@@ -262,20 +266,24 @@ public class Map {
 		this.mordor = mordor;
 	}
 
-	//koordinatak azonositasa a palyan, majd tovabbadni az upgradenek az azonositott roadot
+	// koordinatak azonositasa a palyan, majd tovabbadni az upgradenek az
+	// azonositott roadot
 	public void addSwamp(int x, int y) {
 		Tile tile = map.get(x * size + y);
-		if(tile instanceof Road)
+		if (tile instanceof Road)
 			addSwamp(tile);
-		else Printer.printError("You can't put a swamp there.");
+		else
+			Printer.printError("You can't put a swamp there.");
 	}
-	
-	//koordinatak azonositasa a palyan, majd tovabbadni az upgradenek az azonositott swampot
-	public void upgradeSwamp(int x, int y){
+
+	// koordinatak azonositasa a palyan, majd tovabbadni az upgradenek az
+	// azonositott swampot
+	public void upgradeSwamp(int x, int y) {
 		Tile tile = map.get(x * size + y);
-		if(tile instanceof Swamp)
-			upgradeSwamp((Swamp)tile);
-		else Printer.printError("No swamp there to upgrade.");
+		if (tile instanceof Swamp)
+			upgradeSwamp((Swamp) tile);
+		else
+			Printer.printError("No swamp there to upgrade.");
 	}
 
 	// torony fejlesztese az adott fielden
@@ -288,7 +296,8 @@ public class Map {
 				st.setField(field);
 				field.setTower(st);
 				gem = null;
-				Printer.printUpgradeTower(prevT, st, this, field);	//prints the output
+				Printer.printUpgradeTower(prevT, st, this, field); // prints the
+																	// output
 			} else {
 				Printer.printError("There is no tower on this field");
 			}
@@ -301,7 +310,8 @@ public class Map {
 				dt.setField(field);
 				field.setTower(dt);
 				gem = null;
-				Printer.printUpgradeTower(prevT, dt, this, field); // prints the output
+				Printer.printUpgradeTower(prevT, dt, this, field); // prints the
+																	// output
 			} else {
 				Printer.printError("There is no tower on this field");
 			}
@@ -319,6 +329,7 @@ public class Map {
 		// ")");
 		if (this.gem instanceof SwpGem) {
 			SuperSwamp sswamp = new SuperSwamp(swamp);
+			sswamp.setListener(listener);
 			map.set(map.indexOf(swamp), sswamp);
 			gem = null;
 			Printer.printUpgradeSwamp(this, sswamp);
@@ -334,10 +345,10 @@ public class Map {
 
 	public void upgradeTower(int x, int y) {
 		Tile tile = map.get(x * size + y);
-		if(tile instanceof Field)
+		if (tile instanceof Field)
 			upgradeTower((Field) tile);
 		else
-			Printer.printError("This is not a field. You can't put tower there.");	
+			Printer.printError("This is not a field. You can't put tower there.");
 	}
 
 	public List<Tower> getTowers() {

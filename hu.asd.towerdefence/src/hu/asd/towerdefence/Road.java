@@ -21,6 +21,9 @@ public class Road extends Tile {
 	
 	//ellenseg belepeset kezeli
 	public void enter(Enemy enemy) {
+		if (enemy.getActionListener()==null){
+			enemy.setActionListener(listener);
+		}
 		enemies.add(enemy);
 		enemy.setRoad(this);
 	}
