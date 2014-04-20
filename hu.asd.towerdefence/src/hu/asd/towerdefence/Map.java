@@ -46,26 +46,35 @@ public class Map {
 
 	// hozzaad a palyahoz egy uj elemet
 	public void addTile(Tile tile) {
+		tile.setListener(listener);
 		getMap().add(tile);
 	}
 
 	// lerak egy tornyot az egyik Tile-ra
 	public void addTower(Tile tile) {
 		if (tile instanceof Field) {
-			DefTower t = new DefTower();
-			if (MagicPower.decrease(t)) {
-				t.addListener(listener);
-				t.setField((Field) tile);
-				getTowers().add(t);
-			} else {
-				listener.notEnoughMP();
-			}
+			Field f = (Field) tile;
+			if (f.getTower() == null) { // ellenorzes, hogy van-e mar torony a
+										// fielden
+				DefTower t = new DefTower();
+				if (MagicPower.decrease(t)) {
+					t.addListener(listener);
+					t.setField((Field) tile);
+					getTowers().add(t);
+					Printer.print(t, this); // kiiras
+				} else {
+					listener.notEnoughMP();
+				}
 
+			} else {
+				Printer.printError("Field is not empty.");
+			}
 		} else {
 			listener.wrongTileSelected();
 		}
 	}
 
+	// torony hozzaadasnal a koordinatak atalakitasa Tile objectre
 	public void addTower(int x, int y) {
 		Tile tile = map.get(x * size + y);
 		addTower(tile);
@@ -232,8 +241,9 @@ public class Map {
 				}
 
 				listener.onSwampAdded(s);
-			}else
+			} else
 				listener.notEnoughMP();
+
 		} else
 			listener.wrongTileSelected();
 	}
@@ -293,6 +303,7 @@ public class Map {
 			if (field.getTower() != null) {
 				Tower prevT = field.getTower();
 				SpdTower st = new SpdTower();
+				st.addListener(listener);
 				st.setField(field);
 				field.setTower(st);
 				gem = null;
@@ -307,6 +318,7 @@ public class Map {
 			if (field.getTower() != null) {
 				Tower prevT = field.getTower();
 				DmgTower dt = new DmgTower();
+				dt.addListener(listener);
 				dt.setField(field);
 				field.setTower(dt);
 				gem = null;

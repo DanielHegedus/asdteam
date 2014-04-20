@@ -33,7 +33,7 @@ public class Printer {
 	}
 
 	public static void print(Enemy e, int x, int y) {
-		print(e," (" + x + "," + y + ")");
+		print(e," (" + x + "," + y + ")\n");
 	}
 
 	public static void print(Enemy e, String action) {
@@ -102,8 +102,20 @@ public class Printer {
 		}
 	}
 
+	//print: tower name
 	public static void print(Tower t) {
-		System.out.print("[" + t.getClass().getSimpleName() + "]");
+		Field f = t.getField();
+		Tower twr = f.getTower();
+		System.out.print("[" + twr.getClass().getSimpleName() + "]");
+	}
+	
+	//print: tower is created
+	public static void print(Tower t, Map m) {
+		Field f = t.getField();
+		int x = (m.getMap().indexOf(f))/m.getSize();
+		int y = (m.getMap().indexOf(f))%m.getSize();
+		System.out.print("["+ x + ", " + y + ": ");
+		System.out.print(t.getClass().getSimpleName() + "] created\n");
 	}
 
 	public static void printShooting(Tower t, Enemy e) {
@@ -125,11 +137,13 @@ public class Printer {
 		int x = (m.getMap().indexOf(f))/m.getSize();
 		int y = (m.getMap().indexOf(f))%m.getSize();
 		System.out.print("["+ x + ", " + y + ": ");
-		print(prevT);
+		//print(prevT);
+		System.out.print(prevT.getClass().getSimpleName());
 		System.out.print("] upgraded to ");
 		System.out.print("["+ x + ", " + y + ": ");
-		print(upT);
-		System.out.print("]");
+		//print(upT);
+		System.out.print(upT.getClass().getSimpleName());
+		System.out.print("]\n");
 	}
 
 	public static void printUpgradeSwamp(Map m, Swamp swp) {

@@ -74,9 +74,21 @@ public class Parser {
 
 				// check the optional arg
 				if (s.equals("spd")) {
+					DefTower tmp = new DefTower();
+					SpdGem gem=new SpdGem();
+					MagicPower.increase(tmp.getCost());
+					MagicPower.increase(gem.cost);
 					game.getMap().addTower(x, y);
+					game.buyGem(gem);
+					game.getMap().upgradeTower(x, y);
 				} else if (s.equals("dmg")) {
+					DefTower tmp = new DefTower();
+					DmgGem gem=new DmgGem();
+					MagicPower.increase(tmp.getCost());
+					MagicPower.increase(gem.cost);
 					game.getMap().addTower(x, y);
+					game.buyGem(gem);
+					game.getMap().upgradeTower(x, y);
 				} else if (s.equals("-noMP")) {
 					DefTower tmp = new DefTower();
 					MagicPower.increase(tmp.getCost());
@@ -141,14 +153,14 @@ public class Parser {
 					MagicPower.increase(gem.getCost());
 				}
 				game.buyGem(gem);
-
+				Printer.printGem(game);
 			} else {
 				Printer.printError("Usage: buyGem type [-noMP]. Type can be spd, dmg or swp");
 			}
 			break;
 
 		// prints out all the enemies on the map
-		case "printEnemies":
+		case "listEnemies":
 			Printer.printEnemies(game.getMap());
 			break;
 
@@ -252,7 +264,8 @@ public class Parser {
 
 				if (t instanceof Road) {
 					((Road)t).enter(e);
-				}else
+				} else
+
 					Printer.printError("Enemies can only be placed on roads");
 
 			} catch (Exception e) {
@@ -260,7 +273,7 @@ public class Parser {
 			}
 			break;
 
-		case "setFog":
+		case "addFog":
 			try {
 				int x = scanner.nextInt();
 				int y = scanner.nextInt();

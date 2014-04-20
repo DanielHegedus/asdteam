@@ -43,7 +43,7 @@ public class ConsoleDisplay implements TDActionListener{
 
 	@Override
 	public void onTowerNotShooting(Tower t) {
-		Printer.print(t," not shooting ");
+		Printer.print(t," not shooting, there is no enemy in sight to shoot. ");
 		
 	}
 
