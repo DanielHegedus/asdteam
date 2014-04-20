@@ -52,20 +52,27 @@ public class Map {
 	// lerak egy tornyot az egyik Tile-ra
 	public void addTower(Tile tile) {
 		if (tile instanceof Field) {
+			Field f = (Field) tile;
+			if(f.getTower() == null){  		//ellenorzes, hogy van-e mar torony a fielden
 			DefTower t = new DefTower();
 			if (MagicPower.decrease(t)) {
 				t.addListener(listener);
 				t.setField((Field) tile);
 				getTowers().add(t);
+				Printer.print(t, this);		//kiiras
 			} else {
 				listener.notEnoughMP();
 			}
 
 		} else {
+				Printer.printError("Field is not empty.");
+			}
+		}else{
 			listener.wrongTileSelected();
 		}
 	}
 
+	//torony hozzaadasnal a koordinatak atalakitasa Tile objectre
 	public void addTower(int x, int y) {
 		Tile tile = map.get(x * size + y);
 		addTower(tile);
@@ -222,6 +229,7 @@ public class Map {
 	public void addSwamp(Tile tile) {
 		if (tile instanceof Road) {
 			Swamp s = new Swamp((Road) tile);
+			if (MagicPower.decrease(s)) {
 			map.set(map.indexOf(tile), s);
 
 			// tell neighbouring tiles that they have a new neighbour
@@ -230,6 +238,9 @@ public class Map {
 			}
 
 			listener.onSwampAdded(s);
+			}else{ 
+				listener.notEnoughMP(); 
+				}
 		} else
 			listener.wrongTileSelected();
 	}

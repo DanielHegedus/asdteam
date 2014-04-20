@@ -141,14 +141,14 @@ public class Parser {
 					MagicPower.increase(gem.getCost());
 				}
 				game.buyGem(gem);
-
+				Printer.printGem(game);
 			} else {
 				Printer.printError("Usage: buyGem type [-noMP]. Type can be spd, dmg or swp");
 			}
 			break;
 
 		// prints out all the enemies on the map
-		case "printEnemies":
+		case "listEnemies":
 			Printer.printEnemies(game.getMap());
 			break;
 
@@ -250,7 +250,7 @@ public class Parser {
 
 				Tile t = getTile(x, y);
 
-				if (t instanceof Road) {
+				if (t instanceof Road || t instanceof Swamp || t instanceof SuperSwamp) {
 					((Road) t).enter(e);
 				} else
 					Printer.printError("Enemies can only be placed on roads");
