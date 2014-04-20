@@ -8,7 +8,7 @@
 
 package hu.asd.towerdefence;
 public class Hobbit extends Enemy {
-
+//hobbit ellensegunk osztalya
 	private static int idNo = 0;
 	
 	public Hobbit(){

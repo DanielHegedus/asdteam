@@ -8,7 +8,7 @@
 
 package hu.asd.towerdefence;
 public class Human extends Enemy {
-
+//ember ellensegunk osztalya
 	private static int idNo = 0;
 	
 	public Human(){

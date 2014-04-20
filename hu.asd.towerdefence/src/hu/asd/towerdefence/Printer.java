@@ -5,18 +5,26 @@ import java.util.List;
 
 public class Printer {
 	
-
+	//error message
 	public static void printError(String err){
 		System.out.println("ERROR: "+err);
 	}
-
+	
+	//jatek vege kiirasok
 	public static void printGameOver(boolean playerWon) {
-		if (playerWon)
+		if (playerWon){
 			System.out.println("Congratulations, you have saved Middle Earth");
-		else
+			System.out.println("Game Over - You won");
+			System.exit(0);
+		}
+		else{
 			System.out.println("The world is in ruins now thanks to you");
+			System.out.println("Game Over - You lost");
+			System.exit(0);
+		}
 	}
-
+	
+	//print enemies on the map
 	public static void printEnemies(Map map) {
 		for (int i = 0; i < map.getMap().size(); i++) {
 			if (map.getMap().get(i) instanceof Road)
@@ -27,20 +35,24 @@ public class Printer {
 		}
 	}
 
+	//print an enemy with id name and hp
 	public static void print(Enemy e) {
 		System.out.print("[" +e.getId() + ":" + e.getClass().getSimpleName() + "] HP: "
 				+ e.getHP());
 	}
 
+	//print enemy with coords
 	public static void print(Enemy e, int x, int y) {
-		print(e," (" + x + "," + y + ")\n");
+		print(e," (" + x + "," + y + ")");
 	}
 
+	//print enemy and action
 	public static void print(Enemy e, String action) {
 		print(e);
 		System.out.print(action);
 	}
-
+	
+	//print which gem you have
 	public static void printGem(Game game) {
 		String gem = "None";
 		if (game.getMap().getGem() != null)
@@ -56,24 +68,25 @@ public class Printer {
 		print(map.getMap(), map.getSize());
 	}
 
-	// TODO specification
+	// print the map elements
 	public static void print(List<Tile> map, int size) {
 		for (int i = 0; i < map.size(); i++) {
 			Tile t = map.get(i);
 			if (t.getClass() == Road.class)
 				if (((Road) t).hasEnemy() != null)
-					System.out.print(((Road) t).getEnemies().size());
+					//System.out.print(((Road) t).getEnemies().size());
+					System.out.print("*");
 				else
 					System.out.print("U");
 			else if (t.getClass() == Mordor.class)
 				System.out.print("M");
 			else if (t.getClass() == Swamp.class)
 				if (((Swamp) t).hasEnemy() != null)
-					System.out.print("M");
+					System.out.print("S");
 				else
-					System.out.print("W");
+					System.out.print("S");
 			else if (t.getClass() == SuperSwamp.class)
-				System.out.print("S");
+				System.out.print("W");
 			else {
 				Field f = (Field) map.get(i);
 				if (f.getTower() != null){
@@ -82,7 +95,7 @@ public class Printer {
 					else if(f.getTower() instanceof SpdTower)
 						System.out.print("P");
 					else
-						System.out.print("X");
+						System.out.print("O");
 				}
 				else
 					System.out.print("-");
@@ -114,10 +127,11 @@ public class Printer {
 		Field f = t.getField();
 		int x = (m.getMap().indexOf(f))/m.getSize();
 		int y = (m.getMap().indexOf(f))%m.getSize();
-		System.out.print("["+ x + ", " + y + ": ");
+		System.out.print("["+ x + "," + y + ":");
 		System.out.print(t.getClass().getSimpleName() + "] created\n");
 	}
 
+	//print tower shoot at enemy
 	public static void printShooting(Tower t, Enemy e) {
 		print(t);
 		System.out.print("shot at");
@@ -126,8 +140,12 @@ public class Printer {
 
 	}
 
-	public static void print(Tower t, String action) {
-		print(t);
+	public static void print(Tower t, String action, Map m) {
+		Field f = t.getField();
+		int x = (m.getMap().indexOf(f))/m.getSize();
+		int y = (m.getMap().indexOf(f))%m.getSize();
+		System.out.print("["+ x + "," + y + ":");
+		System.out.print(t.getClass().getSimpleName() + "] ");
 		System.out.println(action);
 
 	}
@@ -136,23 +154,24 @@ public class Printer {
 	public static void printUpgradeTower(Tower prevT, Tower upT, Map m, Field f){
 		int x = (m.getMap().indexOf(f))/m.getSize();
 		int y = (m.getMap().indexOf(f))%m.getSize();
-		System.out.print("["+ x + ", " + y + ": ");
+		System.out.print("["+ x + "," + y + ":");
 		//print(prevT);
 		System.out.print(prevT.getClass().getSimpleName());
 		System.out.print("] upgraded to ");
-		System.out.print("["+ x + ", " + y + ": ");
+		System.out.print("["+ x + "," + y + ":");
 		//print(upT);
 		System.out.print(upT.getClass().getSimpleName());
 		System.out.print("]\n");
 	}
-
+	
+	//print about the swamp upgrade
 	public static void printUpgradeSwamp(Map m, Swamp swp) {
 		int x = (m.getMap().indexOf(swp))/m.getSize();
 		int y = (m.getMap().indexOf(swp))%m.getSize();
-		System.out.print("["+ x + ", " + y + ": Swamp");
+		System.out.print("["+ x + "," + y + ":Swamp");
 		System.out.print("] upgraded to ");
-		System.out.print("["+ x + ", " + y + ": SuperSwamp");
-		System.out.print("]");
+		System.out.print("["+ x + "," + y + ":SuperSwamp");
+		System.out.print("]\n");
 	}
 
 	public static void print(Tile t, String action, Map m) {
@@ -160,7 +179,8 @@ public class Printer {
 		int y = (m.getMap().indexOf(t))%m.getSize();
 		System.out.println("["+x+","+y+":"+t.getClass().getSimpleName()+"] " + action);		
 	}
-
+	
+	//print coords
 	public static void printCoords(Tile t, Map m) {
 		int x = (m.getMap().indexOf(t))/m.getSize();
 		int y = (m.getMap().indexOf(t))%m.getSize();

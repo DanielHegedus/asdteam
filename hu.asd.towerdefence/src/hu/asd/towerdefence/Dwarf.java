@@ -9,7 +9,7 @@
 package hu.asd.towerdefence;
 
 public class Dwarf extends Enemy {
-
+//torpe ellenseg osztalya
 	private static int idNo = 0;
 	
 	public Dwarf(){

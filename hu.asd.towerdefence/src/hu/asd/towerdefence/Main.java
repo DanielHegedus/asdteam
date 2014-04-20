@@ -12,6 +12,7 @@ public class Main {
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				System.in));
+		System.out.println("asd_team : Prototype - start with initGame");
 		while (true) {
 			try {
 

@@ -1,6 +1,6 @@
 package hu.asd.towerdefence;
 public class DefTower extends Tower {
-
+	//basic tower's class
 	public DefTower(){
 		super();
 		speed=2;

@@ -9,7 +9,7 @@
 package hu.asd.towerdefence;
 
 public class Elf extends Enemy {
-	
+//tunde ellenseg osztalya
 	private static int idNo = 0;
 
 	public Elf(){

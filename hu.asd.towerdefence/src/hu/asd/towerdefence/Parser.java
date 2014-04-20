@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Parser {
-
+//bemeneti parancsok kezelesere letrehozott parser
 	private Game game;
 
 	/** ctor, receives a reference to the game */

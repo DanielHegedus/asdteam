@@ -5,8 +5,8 @@ public class SpdTower extends Tower {
 		super();
 		speed=2; // TODO
 		power=1;
-		setTimeleft(2);
-		defTimeleft=2;
+		setTimeleft(0);
+		defTimeleft=0;
 		cost=5;
 	}
 }
