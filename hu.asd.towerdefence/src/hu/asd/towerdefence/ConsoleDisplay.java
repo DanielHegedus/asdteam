@@ -97,7 +97,7 @@ public class ConsoleDisplay implements TDActionListener{
 	//print if enemy created
 	@Override
 	public void onEnemyCreated(Enemy newEnemy) {
-		Printer.print(newEnemy," created");
+		Printer.print(newEnemy," created\n");
 	}
 	
 	//print that no enemy in sight for the tower
