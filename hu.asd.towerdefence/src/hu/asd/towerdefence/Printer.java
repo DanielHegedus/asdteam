@@ -29,8 +29,10 @@ public class Printer {
 		for (int i = 0; i < map.getMap().size(); i++) {
 			if (map.getMap().get(i) instanceof Road)
 				if (((Road) map.getMap().get(i)).hasEnemy() != null)
-					for (Enemy e : ((Road) map.getMap().get(i)).getEnemies())
+					for (Enemy e : ((Road) map.getMap().get(i)).getEnemies()){
 						print(e, i % map.getSize(), i / map.getSize());
+						System.out.println();
+					}
 
 		}
 	}
