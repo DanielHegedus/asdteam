@@ -14,10 +14,59 @@ import java.util.Scanner;
 public class Parser {
 //bemeneti parancsok kezelesere letrehozott parser
 	private Game game;
+	private String[] commands;
+	
+	private final int TICK = 0;
+	private final int INIT = 1;
+	private final int ADD_TOWER = 2;
+	private final int ADD_SWAMP = 3;
+	private final int BUY_GEM = 4;
+	private final int LIST_ENEMIES = 5;
+	private final int PRINT_MAP = 6;
+	private final int GET_MP = 7;
+	private final int SET_MP = 8;
+	private final int GET_GEM = 9;
+	private final int SHOOT = 10;
+	private final int PLACE_ENEMY = 11;
+	private final int ADD_FOG = 12;
+	private final int REMOVE_FOG = 13;
+	private final int DAMAGE_ENEMY = 14;
+	private final int MOVE = 15;
+	private final int ENTER_MORDOR = 16;
+	private final int UPGRADE_TOWER = 17;
+	private final int UPGRADE_SWAMP = 18;
+	private final int SAVE = 19;
+	private final int LOAD = 20;
+	private final int EXIT = 21;
+
+	
 
 	/** ctor, receives a reference to the game */
 	public Parser(Game game) {
 		this.game = game;
+		commands=new String[23];
+		commands[TICK]="tick";
+		commands[INIT]="initGame";
+		commands[ADD_TOWER]="addTower";
+		commands[ADD_SWAMP]="addSwamp";
+		commands[BUY_GEM]="buyGem";
+		commands[LIST_ENEMIES]="listEnemies";
+		commands[PRINT_MAP]="printMap";
+		commands[GET_MP]="getMP";
+		commands[SET_MP]="setMP";
+		commands[GET_GEM]="getGem";
+		commands[SHOOT]="shoot";
+		commands[PLACE_ENEMY]="placeEnemy";
+		commands[ADD_FOG]="addFog";
+		commands[REMOVE_FOG]="removeFog";
+		commands[DAMAGE_ENEMY]="damageEnemy";
+		commands[MOVE]="move";
+		commands[ENTER_MORDOR]="enterMordor";
+		commands[UPGRADE_TOWER]="upgradeTower";
+		commands[UPGRADE_SWAMP]="upgradeSwamp";
+		commands[SAVE]="save";
+		commands[LOAD]="load";
+		commands[EXIT]="exit";
 	}
 
 	/**
@@ -34,12 +83,19 @@ public class Parser {
 			return;
 		}
 
-		String cmd = scanner.next();
+		String command = scanner.next();
 
+		Integer cmd = -1;
+		
+		for (int i=0;i<commands.length;i++){
+			if (command.equals(commands[i]))
+				cmd=i;
+		}
+		
 		switch (cmd) {
 
 		// gives one or more ticks to the game
-		case "tick":
+		case TICK:
 			int n = 1;
 			try {
 				n = scanner.nextInt();
@@ -56,12 +112,12 @@ public class Parser {
 			break;
 
 		// command for setting up the map
-		case "initGame":
+		case INIT:
 			game.init();
 			break;
 
 		// adds a tower to the field specified by x,y coordinates
-		case "addTower":
+		case ADD_TOWER:
 			try {
 				int x = scanner.nextInt();
 				int y = scanner.nextInt();
@@ -103,7 +159,7 @@ public class Parser {
 			}
 			break;
 
-		case "addSwamp":
+		case ADD_SWAMP:
 			try {
 				int x = scanner.nextInt();
 				int y = scanner.nextInt();
@@ -129,7 +185,7 @@ public class Parser {
 			break;
 
 		// buys the given gem
-		case "buyGem":
+		case BUY_GEM:
 			String s;
 			if (scanner.hasNext()) {
 				s = scanner.next();
@@ -160,22 +216,22 @@ public class Parser {
 			break;
 
 		// prints out all the enemies on the map
-		case "listEnemies":
+		case LIST_ENEMIES:
 			Printer.printEnemies(game.getMap());
 			break;
 
 		// prints out the map
-		case "printMap":
+		case PRINT_MAP:
 			Printer.print(game.getMap());
 			break;
 
 		// getting the value of the MP
-		case "getMP":
+		case GET_MP:
 			Printer.printMP();
 			break;
 
 		// setting the MP
-		case "setMP":
+		case SET_MP:
 			try {
 				MagicPower.setMP(scanner.nextInt());
 			} catch (NoSuchElementException e) {
@@ -184,12 +240,12 @@ public class Parser {
 			break;
 
 		// displaying the current gem
-		case "getGem":
+		case GET_GEM:
 			Printer.printGem(game);
 			break;
 
 		// shooting with a tower
-		case "shoot":
+		case SHOOT:
 			try {
 				int x = scanner.nextInt();
 				int y = scanner.nextInt();
@@ -234,7 +290,7 @@ public class Parser {
 			}
 			break;
 
-		case "placeEnemy":
+		case PLACE_ENEMY:
 			try {
 				int x = scanner.nextInt();
 				int y = scanner.nextInt();
@@ -273,7 +329,7 @@ public class Parser {
 			}
 			break;
 
-		case "addFog":
+		case ADD_FOG:
 			try {
 				int x = scanner.nextInt();
 				int y = scanner.nextInt();
@@ -291,7 +347,7 @@ public class Parser {
 
 			break;
 
-		case "removeFog":
+		case REMOVE_FOG:
 			try {
 				int x = scanner.nextInt();
 				int y = scanner.nextInt();
@@ -310,7 +366,7 @@ public class Parser {
 			break;
 
 		// damaging an enemy
-		case "damageEnemy":
+		case DAMAGE_ENEMY:
 			String id = null;
 			int damage = 0;
 
@@ -350,7 +406,7 @@ public class Parser {
 
 			break;
 
-		case "move":
+		case MOVE:
 			if (scanner.hasNext()) {
 				Enemy e = getEnemyById(scanner.next());
 				if (e != null) {
@@ -366,7 +422,7 @@ public class Parser {
 
 			break;
 
-		case "enterMordor":
+		case ENTER_MORDOR:
 			if (scanner.hasNext()) {
 				Enemy e = getEnemyById(scanner.next());
 				if (e != null) {
@@ -379,7 +435,7 @@ public class Parser {
 
 			break;
 
-		case "upgradeTower":
+		case UPGRADE_TOWER:
 			try {
 				int x = scanner.nextInt();
 				int y = scanner.nextInt();
@@ -407,7 +463,7 @@ public class Parser {
 			}
 			break;
 			
-		case "upgradeSwamp":
+		case UPGRADE_SWAMP:
 				try {
 					int x = scanner.nextInt();
 					int y = scanner.nextInt();
@@ -433,21 +489,21 @@ public class Parser {
 			}
 			break;
 
-		case "save":
+		case SAVE:
 			if (scanner.hasNext()){
 				game.save(scanner.next());
 			}else
 				Printer.printError("Usage: save fileName");
 			break;
 			
-		case "load":
+		case LOAD:
 			if (scanner.hasNext()){
 				game.load(scanner.next());
 			}else
 				Printer.printError("Usage: save fileName");
 			break;
 			
-		case "exit":
+		case EXIT:
 			scanner.close();
 			System.exit(0);
 			break;
