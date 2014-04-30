@@ -60,7 +60,7 @@ public class Map {
 				if (MagicPower.decrease(t)) {
 					t.addListener(listener);
 					t.setField((Field) tile);
-					getTowers().add(t);
+					towers.add(t);
 					Printer.print(t, this); // kiiras
 				} else {
 					listener.notEnoughMP();
@@ -136,7 +136,7 @@ public class Map {
 		return false;
 	}
 
-	// TODO
+	
 	public GameData getData() {
 		// creating a new gamedata object
 		GameData gd = new GameData();
@@ -185,7 +185,7 @@ public class Map {
 		return gd;
 	}
 
-	// TODO
+	
 	public void setData(GameData gd) {
 		// restoring the enemies
 		for (Entry<int[], Enemy> entry : gd.getEnemies().entrySet()) {
@@ -303,6 +303,11 @@ public class Map {
 			if (field.getTower() != null) {
 				Tower prevT = field.getTower();
 				SpdTower st = new SpdTower();
+				
+				towers.remove(prevT);
+				towers.add(st);
+				
+				
 				st.addListener(listener);
 				st.setField(field);
 				field.setTower(st);
@@ -318,6 +323,10 @@ public class Map {
 			if (field.getTower() != null) {
 				Tower prevT = field.getTower();
 				DmgTower dt = new DmgTower();
+				
+				towers.remove(prevT);
+				towers.add(dt);
+				
 				dt.addListener(listener);
 				dt.setField(field);
 				field.setTower(dt);
