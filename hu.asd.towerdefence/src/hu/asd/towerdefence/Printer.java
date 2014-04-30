@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class Printer {
-	
+	 
 	//error message
 	public static void printError(String err){
 		System.out.println("ERROR: "+err);
