@@ -15,6 +15,7 @@ public class Parser {
 //bemeneti parancsok kezelesere letrehozott parser
 	private Game game;
 	private String[] commands;
+	private String[] types;
 	
 	private final int TICK = 0;
 	private final int INIT = 1;
@@ -38,6 +39,11 @@ public class Parser {
 	private final int SAVE = 19;
 	private final int LOAD = 20;
 	private final int EXIT = 21;
+	
+	private final int ELF=0;
+	private final int HOBBIT=1;
+	private final int HUMAN=2;
+	private final int DWARF=3;
 
 	
 
@@ -67,6 +73,12 @@ public class Parser {
 		commands[SAVE]="save";
 		commands[LOAD]="load";
 		commands[EXIT]="exit";
+		
+		types=new String[4];
+		types[ELF]="elf";
+		types[HOBBIT]="hobbit";
+		types[HUMAN]="human";
+		types[DWARF]="dwarf";
 	}
 
 	/**
@@ -84,6 +96,8 @@ public class Parser {
 		}
 
 		String command = scanner.next();
+		
+		
 
 		Integer cmd = -1;
 		
@@ -294,20 +308,25 @@ public class Parser {
 			try {
 				int x = scanner.nextInt();
 				int y = scanner.nextInt();
-				String type = scanner.next();
+				String typeString = scanner.next();
 				Enemy e = null;
+				int type=-1;
 
+				for (int i=0;i<types.length;i++)
+					if (typeString.equals(types[i]))
+						type=i;
+				
 				switch (type) {
-				case "hobbit":
+				case HOBBIT:
 					e = new Hobbit();
 					break;
-				case "elf":
+				case ELF:
 					e = new Elf();
 					break;
-				case "human":
+				case HUMAN:
 					e = new Human();
 					break;
-				case "dwarf":
+				case DWARF:
 					e = new Dwarf();
 					break;
 				default:
@@ -510,7 +529,7 @@ public class Parser {
 
 		// if the input didn't match any command
 		default:
-			Printer.printError("No such command: " + cmd);
+			Printer.printError("No such command: " + command);
 		}
 
 		scanner.close();
