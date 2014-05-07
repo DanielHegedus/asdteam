@@ -58,8 +58,7 @@ public class GraphicDisplay implements TDActionListener{
 		frame.add(toolbarPanel, BorderLayout.SOUTH);
 		toolbarPanel.setVisible(true);
 		frame.add(toolbarPanel);
-		//frame.pack();
-		
+		//frame.pack();	
 	}
 	
 	public void menu(){

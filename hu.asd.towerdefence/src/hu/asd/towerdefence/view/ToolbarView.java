@@ -53,6 +53,7 @@ public class ToolbarView extends JPanel {
 		//add the save button to save panel, and save panel to base
 		savePanel.add(saveGame);
 		savePanel.setVisible(true);
+		
 		//add the panels to base panel
 		base.setLayout(new BorderLayout());
 		base.add(topPanel, BorderLayout.EAST);
