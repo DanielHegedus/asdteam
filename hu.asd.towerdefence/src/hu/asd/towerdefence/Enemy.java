@@ -55,10 +55,10 @@ public abstract class Enemy implements Serializable{
 	// csokkenti az ellenseg hp-jat a parameterben megadott int i ertekkel
 	public void lowerHP(int i) {
 		hp -= i;
-		listener.onEnemyDamage(this, i);
+		listener.onEnemyAction(this);
 		if (hp <= 0) { // death
 			MagicPower.increase(this);
-			listener.onMPGain();
+			listener.onMPAction();
 			// kill it by removing references
 			road.leave(this);
 
@@ -74,7 +74,7 @@ public abstract class Enemy implements Serializable{
 	// beallitja a blocktime valtozo erteket
 	public void setBlockTime(int blockTime) {
 		this.blockTime = blockTime;
-		listener.onEnemyBlock(this);
+		listener.onEnemyAction(this);
 	}
 
 	// beallitja, hogy melyik uton van az ellenseg, illetve a previousRoadot is
@@ -93,12 +93,12 @@ public abstract class Enemy implements Serializable{
 
 		// if in swamp decrease blocktime and return
 		if (timeToMove() > 0) {
-			listener.onEnemyBlock(this);
+			listener.onEnemyAction(this);
 			return;
 		}
 
 		road.leave(this);
-		listener.onLeftRoad(this,road);
+		listener.onEnemyAction(this);
 		List<Road> validRoads = new ArrayList<Road>();
 		for (Tile t : road.getNeighbours()) {
 			if ((t.getClass() == Road.class || t.getClass() == Mordor.class
@@ -109,13 +109,13 @@ public abstract class Enemy implements Serializable{
 		}
 		if (validRoads.size() > 1 && (Math.random() < 0.5 || chooseRoad == 1)) {
 			validRoads.get(1).enter(this);
-			listener.onEnteredRoad(this, validRoads.get(1));
+			listener.onEnemyAction(this);
 		} else if (validRoads.size() > 0) {
 			validRoads.get(0).enter(this);
-			listener.onEnteredRoad(this, validRoads.get(0));
+			listener.onEnemyAction(this);
 		} else {
 			previousRoad.enter(this);
-			listener.onEnteredRoad(this, previousRoad);
+			listener.onEnemyAction(this);
 		}
 		chooseRoad = 0; // turn random back on
 	}

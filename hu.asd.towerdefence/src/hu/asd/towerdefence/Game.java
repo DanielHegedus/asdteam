@@ -58,7 +58,7 @@ public class Game {
 		if (MagicPower.decrease(gem)) {
 			map.setGem(gem);
 		} else
-			listener.notEnoughMP();
+			listener.onError(TDActionListener.NO_MP);
 
 	}
 

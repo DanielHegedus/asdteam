@@ -7,58 +7,23 @@ package hu.asd.towerdefence;
 
 public interface TDActionListener {
 	
+	public static final String NO_MP = "Not enough MP";
+	public static final String WRONG_TILE = "Wrong tile selected";
+	
 	public void setGame(Game game);
 	
-	/*Enemy*/
-
-	/**called when an enemy suffers damage */
-	public void onEnemyDamage(Enemy e,int damage);
+	public void onEnemyAction(Enemy e);
 	
-	/** enemy moves a tile */
-	public void onEnemyMovement(Enemy e);
+	public void onMapAction(Tile t);
 	
-	/**enemy is blocked by a swamp */
-	public void onEnemyBlock(Enemy e);
-	
-	/*Tower*/
-	
-	/**tower shooting*/
-	public void onTowerShooting(Tower t, Enemy e);
-	
-	/** event when a tower is not shooting on a tick */
-	public void onTowerNotShooting(Tower t);
-	
-	/** event when a tower is upgraded*/
-	public void onTowerUpgrade(Tower t);
-	
-	/** tower fog */
-	public void onTowerFog(Tower t);
-	
-	/* Swamp */
-	
-	/** a new swamp is added to the map */
-	public void onSwampAdded(Swamp s);
-	
-	/* Other */
-	
-	/** player doesn't have enough MP to purchase a tower or swamp */
-	public void notEnoughMP();
-	
-	/** field is selected for swamp or road for tower */
-	public void wrongTileSelected();
-	
-	/**called when the player gains magicpower */
-	public void onMPGain();
-
-	/**a new enemy is added to the map */
-	public void onEnemyCreated(Enemy newEnemy);
-
-	public void onNoEnemyInSight(Tower tower);
-
-	public void onEnteredRoad(Enemy enemy, Road road);
-
-	public void onLeftRoad(Enemy enemy, Road road);
-
 	public void onTowerAction(Tower t);
+	
+	public void onMPAction();
+	
+	public void onGemAction(Gem gem);
+	
+	public void onGameOver(boolean playerHasWon);
+	
+	public void onError(String message);
 	
 }

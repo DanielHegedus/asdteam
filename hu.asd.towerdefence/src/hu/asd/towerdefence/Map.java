@@ -63,14 +63,14 @@ public class Map {
 					towers.add(t);
 					listener.onTowerAction(t);
 				} else {
-					listener.notEnoughMP();
+					listener.onError(TDActionListener.NO_MP);
 				}
 
 			} else {
-				Printer.printError("Field is not empty.");
+				listener.onError(TDActionListener.WRONG_TILE);
 			}
 		} else {
-			listener.wrongTileSelected();
+			listener.onError(TDActionListener.WRONG_TILE);
 		}
 	}
 
@@ -240,12 +240,12 @@ public class Map {
 					t.setNeighbour(s);
 				}
 
-				listener.onSwampAdded(s);
+				listener.onMapAction(s);
 			} else
-				listener.notEnoughMP();
+				listener.onError(TDActionListener.NO_MP);
 
 		} else
-			listener.wrongTileSelected();
+			listener.onError(TDActionListener.WRONG_TILE);
 	}
 
 	public Road getStart() {

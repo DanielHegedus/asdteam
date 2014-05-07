@@ -45,7 +45,7 @@ public class Tower implements Serializable{
 				newEnemy.setActionListener(listener);
 				e.getRoad().enter(newEnemy);
 				newEnemy.setHP(e.getHP()/2);
-				listener.onEnemyCreated(newEnemy);
+				listener.onEnemyAction(newEnemy);
 			} catch (InstantiationException e1) {
 				e1.printStackTrace();
 			} catch (IllegalAccessException e1) {
@@ -92,7 +92,7 @@ public class Tower implements Serializable{
 	public void onTick() {
 		if (getTimeleft() > 0) {
 			setTimeleft(getTimeleft() - speed);
-			listener.onTowerNotShooting(this);
+			listener.onTowerAction(this);
 			return;
 		}
 		setTimeleft(defTimeleft);
@@ -100,7 +100,7 @@ public class Tower implements Serializable{
 			for (Road r : closeNeighbours) {
 				if (r.hasEnemy() != null) {
 					Enemy e = r.hasEnemy();
-					listener.onTowerShooting(this, e);
+					listener.onTowerAction(this);
 					e.shoot(this);
 					return;
 				}
@@ -110,13 +110,13 @@ public class Tower implements Serializable{
 			for (Road r : neighbours) {
 				if (r.hasEnemy() != null) {
 					Enemy e = r.hasEnemy();
-					listener.onTowerShooting(this, e);
+					listener.onTowerAction(this);
 					e.shoot(this);
 					return;
 				}
 			}
 		}
-		listener.onNoEnemyInSight(this);
+		
 	}
 
 	public boolean isInFog() {
@@ -125,7 +125,7 @@ public class Tower implements Serializable{
 
 	public void setFog(boolean fog) {
 		this.fog = fog;
-		listener.onTowerFog(this);
+		listener.onTowerAction(this);
 	}
 
 	public TDActionListener getListener() {

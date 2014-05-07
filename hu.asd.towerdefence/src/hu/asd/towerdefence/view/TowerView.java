@@ -14,6 +14,7 @@ import hu.asd.towerdefence.Tower;
 
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class TowerView extends Component{
 		File def=new File("img/def.png");
 		File dmg=new File("img/dmg.png");
 		File spd=new File("img/spd.png");
-		
+		 
 		try {
 			defImage=ImageIO.read(def);
 			dmgImage=ImageIO.read(dmg);
@@ -47,6 +48,7 @@ public class TowerView extends Component{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 	
 	@Override

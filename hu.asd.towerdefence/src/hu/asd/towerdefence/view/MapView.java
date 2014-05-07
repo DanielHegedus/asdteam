@@ -19,7 +19,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 @SuppressWarnings("serial")
-public class MapView extends Component implements Paintable {
+public class MapView extends Component{
 
 	BufferedImage field;
 	BufferedImage road;
@@ -61,7 +61,7 @@ public class MapView extends Component implements Paintable {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		//g.drawString("ASD", 10, 10);
+		
 		for (int i=0;i<map.getMap().size();i++){
 			int y=i/map.getSize()*tilesize;
 			int x=i%map.getSize()*tilesize;
