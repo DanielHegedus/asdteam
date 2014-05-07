@@ -14,7 +14,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 @SuppressWarnings("serial")
-public class MapView extends Component implements Paintable {
+public class MapView extends Component {
 
 	BufferedImage field;
 	BufferedImage road;

@@ -10,9 +10,8 @@ public class Main {
 	public static void main(String args[]) {
 		GraphicDisplay gd = new GraphicDisplay();
 		Game game = new Game(gd);
-		game.init();
+		gd.menu();
 		gd.setGame(game);
-		gd.setup();
 
 		//Parser parser = new Parser(game);
 
