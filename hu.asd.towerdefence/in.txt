@@ -1,0 +1,9 @@
+initGame
+addTower 2 2 -noMP
+placeEnemy 2 4 hobbit
+addTower 2 3
+addTower 2 3 -noMP
+upgradeTower 2 3 spd
+addSwamp 1 4 -noMP
+placeEnemy 1 4 dwarf
+exit
