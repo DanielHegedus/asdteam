@@ -7,6 +7,7 @@ import hu.asd.towerdefence.Mordor;
 import hu.asd.towerdefence.Road;
 import hu.asd.towerdefence.SuperSwamp;
 import hu.asd.towerdefence.Swamp;
+import hu.asd.towerdefence.Tower;
 
 import java.awt.Component;
 import java.awt.Graphics;
@@ -17,9 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class MapView extends Component{
+public class MapView extends JPanel{
 
 	BufferedImage field;
 	BufferedImage road;
@@ -32,6 +34,7 @@ public class MapView extends Component{
 	
 	Map map;
 	private int tilesize=100;
+	private Graphics graphics;
 	
 
 	public MapView(Map map) {
@@ -58,9 +61,15 @@ public class MapView extends Component{
 
 	}
 
+	public void paintComponent(Graphics g){
+		graphics=g;
+		super.paintComponent(g);
+		paint(g);
+	}
+	
 	@Override
 	public void paint(Graphics g) {
-		super.paint(g);
+		//super.paint(g);
 		
 		for (int i=0;i<map.getMap().size();i++){
 			int y=i/map.getSize()*tilesize;
@@ -69,10 +78,10 @@ public class MapView extends Component{
 				g.drawImage(field, x, y, null);
 				Field field = (Field) map.getMap().get(i);
 				if (field.getTower()!=null){
-					TowerView tv=new TowerView(field.getTower());
+					TowerView tv=getTowerView(field.getTower());
 					tv.setCoords(x, y);
 					tv.paint(g);
-					
+					 
 				}
 			}
 			else{
@@ -91,7 +100,7 @@ public class MapView extends Component{
 					for (Enemy e : r.getEnemies()){
 						EnemyView ev = getEnemyView(e);
 						ev.setCoords(x, y);
-						ev.paint(getGraphics());
+						ev.paint(g);
 						
 					}
 				}
@@ -116,6 +125,18 @@ public class MapView extends Component{
 		EnemyView ev=new EnemyView(e);
 		enemies.add(ev);
 		return ev;
+		
+	}
+	
+	private TowerView getTowerView(Tower t){
+		for (TowerView tv:towers){
+			if (tv.getTower().equals(t)){
+				return tv;
+			}
+		}
+		TowerView tv=new TowerView(t);
+		towers.add(tv);
+		return tv;
 		
 	}
 

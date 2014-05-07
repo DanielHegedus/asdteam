@@ -30,7 +30,7 @@ public class Game {
 
 	public Game() {
 		mapBuilder = new MapBuilder();
-		timer = new Timer(this);
+		setTimer(new Timer(this));
 	}
 
 	public Game(TDActionListener listener) {
@@ -50,7 +50,7 @@ public class Game {
 	// jatek inditasa
 	public void start() {
 		//System.out.println("--> timer.");
-		timer.start();
+		getTimer().start();
 	}
 
 	// a parameterben megadott varazsko vasarlasa
@@ -64,7 +64,8 @@ public class Game {
 
 	// jatek vege TODO
 	public void gameOver(boolean playerWon) {
-		Printer.printGameOver(playerWon);
+		listener.onGameOver(playerWon);
+		getTimer().stop();
 	}
 
 	// jatek ujrainditasa
@@ -131,5 +132,13 @@ public class Game {
 
 	public void setMap(Map map) {
 		this.map = map;
+	}
+
+	public Timer getTimer() {
+		return timer;
+	}
+
+	public void setTimer(Timer timer) {
+		this.timer = timer;
 	}
 }

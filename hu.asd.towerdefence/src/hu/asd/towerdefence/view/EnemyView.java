@@ -5,6 +5,7 @@ import hu.asd.towerdefence.Elf;
 import hu.asd.towerdefence.Enemy;
 import hu.asd.towerdefence.Hobbit;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -52,10 +53,19 @@ public class EnemyView extends Component{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		
 	}
 	
 	@Override
 	public void paint(Graphics g){
+	
+		g.drawRect(x+10, y-20, 30, 5);
+		g.setColor(Color.RED);
+		g.fillRect(x+11, y-19, 29, 4);
+		g.setColor(Color.GREEN);
+		g.fillRect(x+11, y-19, (int) (((enemy.getHP()*1.0)/(enemy.defHP*1.0))*30)-1, 4);
+		
 		if (takingDamage){
 			if (getEnemy() instanceof Hobbit)
 				g.drawImage(hobbitDamage,x,y,null);

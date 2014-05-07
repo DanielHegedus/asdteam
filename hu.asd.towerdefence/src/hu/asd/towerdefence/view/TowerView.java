@@ -33,7 +33,7 @@ public class TowerView extends Component{
 
 	public TowerView(Tower tower){
 		//set the tower
-		this.tower=tower;
+		this.setTower(tower);
 		
 		//load the images
 		File def=new File("img/def.png");
@@ -53,16 +53,24 @@ public class TowerView extends Component{
 	
 	@Override
 	public void paint(Graphics g){
-		if (tower instanceof DefTower)
+		if (getTower() instanceof DefTower)
 			g.drawImage(defImage, x, y, null);
-		else if (tower instanceof DmgTower)
+		else if (getTower() instanceof DmgTower)
 			g.drawImage(dmgImage, x, y, null);
-		else if (tower instanceof SpdTower)
+		else if (getTower() instanceof SpdTower)
 			g.drawImage(spdImage, x, y, null);
 	}
 	
 	public void setCoords(int x,int y) {
 		this.x=x;
 		this.y=y;
+	}
+
+	public Tower getTower() {
+		return tower;
+	}
+
+	public void setTower(Tower tower) {
+		this.tower = tower;
 	}
 }

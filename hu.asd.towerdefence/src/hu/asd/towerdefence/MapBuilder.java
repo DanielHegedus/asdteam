@@ -67,9 +67,9 @@ public class MapBuilder {
 		map.setMordor((Mordor) t[0][4]);
 		
 		// add enemies
-		map.addEnemy(new Dwarf());
-		//map.addEnemy(new Hobbit());
-		//map.addEnemy(new Elf());
+		//map.addEnemy(new Dwarf());
+		map.addEnemy(new Hobbit());
+		map.addEnemy(new Elf());
 		map.setSize(mapX);
 
 	}

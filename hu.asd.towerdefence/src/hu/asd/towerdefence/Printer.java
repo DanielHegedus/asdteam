@@ -15,7 +15,7 @@ public class Printer {
 		if (playerWon){
 			System.out.println("Congratulations, you have saved Middle Earth");
 			System.out.println("Game Over - You won");
-			System.exit(0);
+			//System.exit(0);
 		}
 		else{
 			System.out.println("The world is in ruins now thanks to you");

@@ -1,6 +1,12 @@
 package hu.asd.towerdefence;
-public class Timer {
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Timer{
+	private static final int TIMER_DELAY = 1000;
 	private Game game; // jatekunk peldanya
+	private javax.swing.Timer timer;
 	
 	public Timer(Game game){
 		this.game=game;
@@ -8,16 +14,17 @@ public class Timer {
 	
 	//elinditja a timert
 	public void start() {
-		System.out.println("start()");
-		while(true){
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			game.getMap().onTick();
-		}
+		timer = new javax.swing.Timer(TIMER_DELAY, new ActionListener() {
+		     public void actionPerformed(ActionEvent e) {
+		        game.getMap().onTick();
+		     }
+		  });
+		timer.start();
 		
 	}
+	
+	public void stop(){
+		timer.stop();
+	}
+
 }

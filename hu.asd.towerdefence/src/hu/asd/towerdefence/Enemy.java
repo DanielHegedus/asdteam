@@ -17,7 +17,7 @@ public abstract class Enemy implements Serializable{
 
 	protected Integer hp; // ellensegunk elete
 	protected Integer blockTime; // number of ticks until the enemy can move
-	protected Integer defHP;
+	public Integer defHP;
 	protected transient Road road;
 	protected transient Road previousRoad;
 	protected transient TDActionListener listener;

@@ -45,7 +45,6 @@ public class Tower implements Serializable{
 				newEnemy.setActionListener(listener);
 				e.getRoad().enter(newEnemy);
 				newEnemy.setHP(e.getHP()/2);
-				listener.onEnemyAction(newEnemy);
 			} catch (InstantiationException e1) {
 				e1.printStackTrace();
 			} catch (IllegalAccessException e1) {
