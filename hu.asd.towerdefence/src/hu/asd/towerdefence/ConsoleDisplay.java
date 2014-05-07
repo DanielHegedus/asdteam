@@ -125,4 +125,10 @@ public class ConsoleDisplay implements TDActionListener{
 		
 	}
 
+	@Override
+	public void onTowerAction(Tower t) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

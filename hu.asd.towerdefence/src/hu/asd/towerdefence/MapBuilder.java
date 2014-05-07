@@ -18,10 +18,10 @@ public class MapBuilder {
 		int mapX = 5;
 		int mapY = 5;
 		char[][] charmap = { 
-				{ 'f', 'f', 'm', 'f', 'f' },
-				{ 'r', 'r', 'r', 'r', 'r' }, 
-				{ 'r', 'f', 'f', 'f', 'r' },
-				{ 'r', 'r', 'r', 'r', 'r' }, 
+				{ 'f', 'f', 'f', 'f', 'm' },
+				{ 'f', 'r', 'r', 'r', 'f' }, 
+				{ 'f', 'r', 'f', 'r', 'f' },
+				{ 'f', 'r', 'r', 'r', 'f' }, 
 				{ 'f', 'f', 'r', 'f', 'f' }, };
 
 		Tile[][] t = new Tile[mapX][mapY];
@@ -64,11 +64,11 @@ public class MapBuilder {
 		}
 		
 		map.setStart((Road) t[4][2]);
-		map.setMordor((Mordor) t[0][2]);
+		map.setMordor((Mordor) t[0][4]);
 		
 		// add enemies
-		//map.addEnemy(new Dwarf());
-		map.addEnemy(new Hobbit());
+		map.addEnemy(new Dwarf());
+		//map.addEnemy(new Hobbit());
 		//map.addEnemy(new Elf());
 		map.setSize(mapX);
 

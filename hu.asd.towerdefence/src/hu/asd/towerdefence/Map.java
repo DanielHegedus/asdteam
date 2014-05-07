@@ -61,7 +61,7 @@ public class Map {
 					t.addListener(listener);
 					t.setField((Field) tile);
 					towers.add(t);
-					Printer.print(t, this); // kiiras
+					listener.onTowerAction(t);
 				} else {
 					listener.notEnoughMP();
 				}

@@ -30,7 +30,7 @@ public class Game {
 
 	public Game() {
 		mapBuilder = new MapBuilder();
-		timer = new Timer();
+		timer = new Timer(this);
 	}
 
 	public Game(TDActionListener listener) {
@@ -49,7 +49,7 @@ public class Game {
 
 	// jatek inditasa
 	public void start() {
-		System.out.println("--> timer.");
+		//System.out.println("--> timer.");
 		timer.start();
 	}
 

@@ -58,5 +58,7 @@ public interface TDActionListener {
 	public void onEnteredRoad(Enemy enemy, Road road);
 
 	public void onLeftRoad(Enemy enemy, Road road);
+
+	public void onTowerAction(Tower t);
 	
 }
