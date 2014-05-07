@@ -9,6 +9,7 @@ import hu.asd.towerdefence.Swamp;
 import hu.asd.towerdefence.TDActionListener;
 import hu.asd.towerdefence.Tower;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -32,23 +33,32 @@ public class GraphicDisplay implements TDActionListener{
 	
 	public GraphicDisplay() {
 		frame = new JFrame("Ket Torony");
-		frame.setBounds(100, 100, 500, 500);
-		frame.setMinimumSize(new Dimension(500,500));
+	//	frame.setBounds(100, 100, 500, 500);
+		frame.setMinimumSize(new Dimension(500,660));
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	public void setup(){
+		frame.setLayout(new BorderLayout());
 		game.init();
-//		MapView mv  = new MapView(game.getMap());
-//		frame.add(mv);
-//		mv.paint(frame.getGraphics());
+		
+		//creating the mapView
+		MapView mv  = new MapView(game.getMap());
+		mv.setPreferredSize(new Dimension(500,500));
+		frame.add(mv, BorderLayout.NORTH);
+		mv.paint(frame.getGraphics());
 		//mv.repaint();
+		
+		//creating the toolbar
+		JPanel toolbarPanel = new JPanel();
 		ToolbarView tbv = new ToolbarView(game);
-//		tbv.asdtest();
-//		frame.add(tbv.jl);
-		frame.add(tbv);
-//		frame.pack();
+		toolbarPanel.setPreferredSize(new Dimension(500,100));
+		toolbarPanel.add(tbv);
+		frame.add(toolbarPanel, BorderLayout.SOUTH);
+		toolbarPanel.setVisible(true);
+		frame.add(toolbarPanel);
+		//frame.pack();
 		
 	}
 	

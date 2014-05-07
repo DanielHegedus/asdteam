@@ -3,17 +3,19 @@ package hu.asd.towerdefence.view;
 import hu.asd.towerdefence.Game;
 import hu.asd.towerdefence.MagicPower;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
-public class ToolbarView extends JLabel {
+public class ToolbarView extends JPanel {
 	
-	JLabel jl;
 
 	public ToolbarView(Game game){
 		
@@ -25,7 +27,7 @@ public class ToolbarView extends JLabel {
 		
 		//create the labels
 		JLabel mpLabel = new JLabel("MAGICPOWER: " + MagicPower.getMP());
-		JLabel gemLabel = new JLabel("GAME: ");
+		JLabel gemLabel = new JLabel("GEM: -");
 		
 		//create the buttons
 		JButton buyTower = new JButton("BUY TOWER");
@@ -46,22 +48,22 @@ public class ToolbarView extends JLabel {
 		bottomPanel.add(buyDmgGem);
 		bottomPanel.add(buySpdGem);
 		bottomPanel.add(buySwpGem);
+		bottomPanel.setMaximumSize(new Dimension(500,500));
 		bottomPanel.setVisible(true);
 		//add the save button to save panel, and save panel to base
 		savePanel.add(saveGame);
 		savePanel.setVisible(true);
-		base.add(savePanel);
-		//add the top and bottom panel to base panel
-		base.add(topPanel);
-		base.add(bottomPanel);
-		base.setLayout(new GridLayout(2,2));
+		//add the panels to base panel
+		base.setLayout(new BorderLayout());
+		base.add(topPanel, BorderLayout.EAST);
+		base.add(bottomPanel, BorderLayout.EAST);
+		base.add(savePanel, BorderLayout.WEST);
+		base.setLayout(new GridLayout(3,1));
 		base.setVisible(true);
 		this.add(base);
+		this.setMaximumSize(new Dimension(500,150));
+		this.setVisible(true);
 		System.out.println("asd");
 	}
 	
-	public void asdtest(){
-		jl = new JLabel("asdfg");
-		jl.setVisible(true);
-	}
 }

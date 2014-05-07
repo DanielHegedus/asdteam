@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class MapView extends Component {
@@ -40,7 +41,7 @@ public class MapView extends Component {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		g.drawString("ASD", 10, 10);
+		//g.drawString("ASD", 10, 10);
 		for (int i=0;i<map.getMap().size();i++){
 			int y=i/map.getSize()*tilesize;
 			int x=i%map.getSize()*tilesize;
