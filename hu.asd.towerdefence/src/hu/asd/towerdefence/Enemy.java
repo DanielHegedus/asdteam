@@ -78,7 +78,7 @@ public abstract class Enemy implements Serializable{
 		listener.onEnemyAction(this);
 	}
 
-	// beallitja, hogy melyik uton van az ellenseg, illetve a previousRoadot is
+	// beallitja, hogy melyik uton van az ellenseg, illetve azt amirõl ellépett
 	public void setRoad(Road road) {
 		this.previousRoad = this.road;
 		this.road = road;
@@ -102,9 +102,7 @@ public abstract class Enemy implements Serializable{
 	//	listener.onEnemyAction(this);
 		List<Road> validRoads = new ArrayList<Road>();
 		for (Tile t : road.getNeighbours()) {
-			if ((t.getClass() == Road.class || t.getClass() == Mordor.class
-					|| t.getClass() == Swamp.class || t.getClass() == SuperSwamp.class)
-					&& t != previousRoad) {
+			if (t instanceof Road && t != previousRoad) {
 				validRoads.add((Road) t);
 			}
 		}

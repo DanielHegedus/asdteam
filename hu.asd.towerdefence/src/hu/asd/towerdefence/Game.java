@@ -71,8 +71,6 @@ public class Game {
 
 	// jatek ujrainditasa
 	public void restart() {
-		System.out.println("restart()");
-		System.out.print(" --> game.");
 		init();
 	}
 

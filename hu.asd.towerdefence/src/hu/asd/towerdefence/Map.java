@@ -365,12 +365,13 @@ public class Map {
 		if (this.gem instanceof SwpGem) {
 			SuperSwamp sswamp = new SuperSwamp(swamp);
 			sswamp.setListener(listener);
-			map.set(map.indexOf(swamp), sswamp);
+			Tile prev = map.set(map.indexOf(swamp), sswamp);
 			setGem(null);
 			Printer.printUpgradeSwamp(this, sswamp);
 			// tell neighbouring tiles that they have a new neighbour
 			for (Tile t : sswamp.getNeighbours()) {
 				t.setNeighbour(sswamp);
+				t.removeNeighbour(prev);
 			}
 		} else {
 			Printer.printError("There is no gem for swamp upgrade."

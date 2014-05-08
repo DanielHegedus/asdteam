@@ -3,5 +3,6 @@ public class SuperSwamp extends Swamp {
 	//effektivebb mocsarunk osztalya
 	public SuperSwamp(Swamp swamp) {
 		super(swamp);
+		power=5;
 	}
 }
