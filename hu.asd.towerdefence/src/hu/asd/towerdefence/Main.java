@@ -14,8 +14,8 @@ public class Main {
 		GraphicDisplay gd = new GraphicDisplay();
 		Game game = new Game(gd);
 		game.init();
-		gd.menu();
 		gd.setGame(game);
+		gd.menu();
 
 		//gd.setup();
 		

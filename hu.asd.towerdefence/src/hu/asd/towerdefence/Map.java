@@ -58,6 +58,7 @@ public class Map {
 										// fielden
 				DefTower t = new DefTower();
 				if (MagicPower.decrease(t)) {
+					listener.onMPAction();
 					t.addListener(listener);
 					t.setField((Field) tile);
 					towers.add(t);
@@ -89,6 +90,7 @@ public class Map {
 	// beallitjuk, hogy milyen gem-unk van
 	public void setGem(Gem gem) {
 		this.gem = gem;
+		listener.onGemAction(gem);
 	}
 
 	// visszadja a gem-unket
@@ -233,6 +235,7 @@ public class Map {
 			Swamp s = new Swamp((Road) tile);
 			s.setListener(listener);
 			if (MagicPower.decrease(s)) {
+				listener.onMPAction();
 				map.set(map.indexOf(tile), s);
 
 				// tell neighbouring tiles that they have a new neighbour
@@ -311,7 +314,7 @@ public class Map {
 				st.addListener(listener);
 				st.setField(field);
 				field.setTower(st);
-				gem = null;
+				setGem(null);
 				Printer.printUpgradeTower(prevT, st, this, field); // prints the
 																	// output
 			} else {
@@ -330,7 +333,7 @@ public class Map {
 				dt.addListener(listener);
 				dt.setField(field);
 				field.setTower(dt);
-				gem = null;
+				setGem(null);
 				Printer.printUpgradeTower(prevT, dt, this, field); // prints the
 																	// output
 			} else {
@@ -352,7 +355,7 @@ public class Map {
 			SuperSwamp sswamp = new SuperSwamp(swamp);
 			sswamp.setListener(listener);
 			map.set(map.indexOf(swamp), sswamp);
-			gem = null;
+			setGem(null);
 			Printer.printUpgradeSwamp(this, sswamp);
 			// tell neighbouring tiles that they have a new neighbour
 			for (Tile t : sswamp.getNeighbours()) {
