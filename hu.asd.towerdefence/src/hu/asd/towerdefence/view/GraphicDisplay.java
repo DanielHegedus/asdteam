@@ -127,6 +127,7 @@ public class GraphicDisplay implements TDActionListener{
 		mPanel.add(exitGame);
 		mPanel.setBackground(new Color(53, 56, 64));
 		mPanel.setVisible(true);
+		frame.validate();
 	}
 
 	@Override
