@@ -24,6 +24,7 @@ public class Tower implements Serializable{
 	protected transient Field field; // field amin a torony van
 	protected boolean fog;
 	protected int defTimeleft;
+	protected int timeLeftInFog;
 	private transient TDActionListener listener;
 	private boolean split;
 	private String id;
@@ -89,6 +90,12 @@ public class Tower implements Serializable{
 	}
 
 	public void onTick() {
+		if (timeLeftInFog>0)
+			timeLeftInFog--;
+		else
+			setFog(false);
+		
+		
 		if (getTimeleft() > 0) {
 			setTimeleft(getTimeleft() - speed);
 			listener.onTowerAction(this);
@@ -124,6 +131,9 @@ public class Tower implements Serializable{
 
 	public void setFog(boolean fog) {
 		this.fog = fog;
+		if (fog){
+			timeLeftInFog=10;
+		}
 		listener.onTowerAction(this);
 	}
 

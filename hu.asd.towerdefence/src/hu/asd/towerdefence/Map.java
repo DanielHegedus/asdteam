@@ -123,6 +123,13 @@ public class Map {
 		for (Tower t : getTowers()) {
 			t.onTick();
 		}
+		
+		//veletlenszeruen kodot rak az egyik toronyra
+		if (Math.random()>0.9 && towers.size()>0){
+			int index=((int) (Math.random()*towers.size()));
+			towers.get(index).setFog(true);
+			//System.out.println(index);
+		}
 
 	}
 

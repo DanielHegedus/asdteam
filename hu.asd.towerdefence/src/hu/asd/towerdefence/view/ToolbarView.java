@@ -9,6 +9,7 @@ import hu.asd.towerdefence.SpdGem;
 import hu.asd.towerdefence.SwpGem;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -81,8 +82,7 @@ public class ToolbarView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				getCntrl().setNewTower(true);
-				
+				getCntrl().setNewTower(true);				
 			}});
 		//buy swamp action listener
 		buySwamp.addActionListener(new ActionListener(){

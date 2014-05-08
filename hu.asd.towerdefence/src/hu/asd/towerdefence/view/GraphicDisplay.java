@@ -148,9 +148,7 @@ public class GraphicDisplay implements TDActionListener{
 
 	@Override
 	public void onEnemyAction(Enemy e) {
-		mv.updateEnemy(e);
-		Toolkit.getDefaultToolkit().beep();
-		
+		mv.updateEnemy(e);		
 	}
 
 	@Override
