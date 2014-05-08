@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -31,6 +32,7 @@ public class GraphicDisplay implements TDActionListener{
 	private MapView mv;
 	private JFrame frame;
 	private JPanel panel;
+	private ToolbarView tbv;
 	
 	public GraphicDisplay() {
 		frame = new JFrame("Ket Torony");
@@ -46,20 +48,22 @@ public class GraphicDisplay implements TDActionListener{
 		
 		//creating the mapView
 		mv  = new MapView(game.getMap());
-		mv.setPreferredSize(new Dimension(500,500));
+		mv.setPreferredSize(new Dimension(1000,500));
 		frame.add(mv, BorderLayout.NORTH);
-		frame.validate();
-		frame.repaint();
+	
 		
 		//creating the toolbar
 		JPanel toolbarPanel = new JPanel();
-		ToolbarView tbv = new ToolbarView(game);
+		tbv = new ToolbarView(game);
 		toolbarPanel.setPreferredSize(new Dimension(500,100));
 		toolbarPanel.add(tbv);
 		frame.add(toolbarPanel, BorderLayout.SOUTH);
 		toolbarPanel.setVisible(true);
 		frame.add(toolbarPanel);
-		//frame.pack();	
+		frame.pack();	
+		frame.validate();
+		frame.repaint();
+		
 	}
 	
 	public void menu(){
@@ -131,24 +135,24 @@ public class GraphicDisplay implements TDActionListener{
 	@Override
 	public void onEnemyAction(Enemy e) {
 		mv.updateEnemy(e);
+		Toolkit.getDefaultToolkit().beep();
 		
 	}
 
 	@Override
 	public void onMapAction(Tile t) {
-		// TODO Auto-generated method stub
+		repaint();
 		
 	}
 
 	@Override
 	public void onMPAction() {
-		//JOptionPane.showMessageDialog(null, "MP Gained!");
-		Printer.printMP();
+		tbv.repaint();
 	}
 
 	@Override
 	public void onGemAction(Gem gem) {
-		// TODO Auto-generated method stub
+		tbv.repaint();
 		
 	}
 

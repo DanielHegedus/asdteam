@@ -15,14 +15,19 @@ public class MapBuilder {
 	public void createMap(Map map) {
 
 		// 5x5 test map
-		int mapX = 5;
-		int mapY = 5;
+		int mapX = 10;
+		int mapY = 20;
 		char[][] charmap = { 
-				{ 'f', 'f', 'f', 'f', 'm' },
-				{ 'f', 'r', 'r', 'r', 'f' }, 
-				{ 'f', 'r', 'f', 'r', 'f' },
-				{ 'f', 'r', 'r', 'r', 'f' }, 
-				{ 'f', 'f', 'r', 'f', 'f' }, };
+				{'r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','f','m'},
+				{'r','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','r','f','r'},
+				{'r','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','r','f','r'},
+				{'r','f','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','f','r'},
+				{'r','f','r','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f'},
+				{'r','r','r','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f'},
+				{'r','f','r','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f'},
+				{'r','f','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r'},
+				{'r','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','f','r'},
+				{'r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r','r'} };
 
 		Tile[][] t = new Tile[mapX][mapY];
 
@@ -63,14 +68,14 @@ public class MapBuilder {
 			}
 		}
 		
-		map.setStart((Road) t[4][2]);
-		map.setMordor((Mordor) t[0][4]);
+		map.setStart((Road) t[9][0]);
+		map.setMordor((Mordor) t[0][19]);
 		
 		// add enemies
 		//map.addEnemy(new Dwarf());
 		map.addEnemy(new Hobbit());
 		map.addEnemy(new Elf());
-		map.setSize(mapX);
+		map.setSize(mapY);
 
 	}
 }

@@ -93,12 +93,12 @@ public abstract class Enemy implements Serializable{
 
 		// if in swamp decrease blocktime and return
 		if (timeToMove() > 0) {
-			listener.onEnemyAction(this);
+			//listener.onEnemyAction(this);
 			return;
 		}
 
 		road.leave(this);
-		listener.onEnemyAction(this);
+	//	listener.onEnemyAction(this);
 		List<Road> validRoads = new ArrayList<Road>();
 		for (Tile t : road.getNeighbours()) {
 			if ((t.getClass() == Road.class || t.getClass() == Mordor.class
@@ -109,13 +109,13 @@ public abstract class Enemy implements Serializable{
 		}
 		if (validRoads.size() > 1 && (Math.random() < 0.5 || chooseRoad == 1)) {
 			validRoads.get(1).enter(this);
-			listener.onEnemyAction(this);
+			listener.onMapAction(road);
 		} else if (validRoads.size() > 0) {
 			validRoads.get(0).enter(this);
-			listener.onEnemyAction(this);
+			listener.onMapAction(road);
 		} else {
 			previousRoad.enter(this);
-			listener.onEnemyAction(this);
+			listener.onMapAction(road);
 		}
 		chooseRoad = 0; // turn random back on
 	}

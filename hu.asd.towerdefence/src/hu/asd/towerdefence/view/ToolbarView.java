@@ -1,33 +1,35 @@
 package hu.asd.towerdefence.view;
 
 import hu.asd.towerdefence.Game;
+import hu.asd.towerdefence.Gem;
 import hu.asd.towerdefence.MagicPower;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class ToolbarView extends JPanel {
 	
 
+	private JLabel mpLabel;
+	private JLabel gemLabel;
+	private Game game;
+
 	public ToolbarView(Game game){
-		
+		this.game=game;
 		//create the panels
 		JPanel base = new JPanel();
 		JPanel topPanel = new JPanel();
 		JPanel bottomPanel = new JPanel();
 		JPanel savePanel = new JPanel();
 		
-		//create the labels
-		JLabel mpLabel = new JLabel("MAGICPOWER: " + MagicPower.getMP());
-		JLabel gemLabel = new JLabel("GEM: -");
+		mpLabel = new JLabel("MAGICPOWER: " + MagicPower.getMP());
+		gemLabel = new JLabel("GEM: -");
 		
 		//create the buttons
 		JButton buyTower = new JButton("BUY TOWER");
@@ -65,6 +67,20 @@ public class ToolbarView extends JPanel {
 		this.setMaximumSize(new Dimension(500,150));
 		this.setVisible(true);
 		System.out.println("asd");
+	}
+	
+	public void repaint(){
+		super.repaint();
+		if (mpLabel!=null)
+			mpLabel.setText("MAGICPOWER: " + MagicPower.getMP());
+		if (gemLabel!=null){
+			Gem gem=game.getMap().getGem();
+			String gemstring="-";
+			if (gem!=null){
+				gemstring=gem.getClass().getSimpleName().substring(0,2);
+			}
+			gemLabel.setText("GEM: "+gemstring);
+		}
 	}
 	
 }

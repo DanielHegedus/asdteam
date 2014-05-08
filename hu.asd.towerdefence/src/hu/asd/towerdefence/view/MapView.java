@@ -33,7 +33,7 @@ public class MapView extends JPanel{
 	private List<TowerView> towers;
 	
 	Map map;
-	private int tilesize=100;
+	private int tilesize=50;
 	private Graphics graphics;
 	
 
@@ -112,7 +112,7 @@ public class MapView extends JPanel{
 	public void updateEnemy(Enemy e) {
 		EnemyView ev=getEnemyView(e);
 		ev.setTakingDamage(true);
-		ev.paint(getGraphics());
+		//ev.paint(getGraphics());
 		
 	}
 	

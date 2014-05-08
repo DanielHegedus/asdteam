@@ -60,6 +60,7 @@ public class EnemyView extends Component{
 	@Override
 	public void paint(Graphics g){
 	
+		g.setColor(Color.BLACK);
 		g.drawRect(x+10, y-20, 30, 5);
 		g.setColor(Color.RED);
 		g.fillRect(x+11, y-19, 29, 4);
