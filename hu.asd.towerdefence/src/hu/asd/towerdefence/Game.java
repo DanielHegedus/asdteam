@@ -27,10 +27,11 @@ public class Game {
 	private MapBuilder mapBuilder;
 	private Timer timer;
 	private TDActionListener listener;
+	public static final String SAVED_GAME = "saved.asd";
 
 	public Game() {
 		mapBuilder = new MapBuilder();
-		timer = new Timer();
+		setTimer(new Timer(this));
 	}
 
 	public Game(TDActionListener listener) {
@@ -49,8 +50,8 @@ public class Game {
 
 	// jatek inditasa
 	public void start() {
-		System.out.println("--> timer.");
-		timer.start();
+		//System.out.println("--> timer.");
+		getTimer().start();
 	}
 
 	// a parameterben megadott varazsko vasarlasa
@@ -58,13 +59,14 @@ public class Game {
 		if (MagicPower.decrease(gem)) {
 			map.setGem(gem);
 		} else
-			listener.notEnoughMP();
+			listener.onError(TDActionListener.NO_MP);
 
 	}
 
 	// jatek vege TODO
 	public void gameOver(boolean playerWon) {
-		Printer.printGameOver(playerWon);
+		listener.onGameOver(playerWon);
+		getTimer().stop();
 	}
 
 	// jatek ujrainditasa
@@ -131,5 +133,13 @@ public class Game {
 
 	public void setMap(Map map) {
 		this.map = map;
+	}
+
+	public Timer getTimer() {
+		return timer;
+	}
+
+	public void setTimer(Timer timer) {
+		this.timer = timer;
 	}
 }

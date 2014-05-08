@@ -15,7 +15,7 @@ public class Elf extends Enemy {
 	public Elf(){
 		super();
 		hp=15;
-		defHP=10;
+		defHP=15;
 		idNo++;
 		setId("e"+idNo);
 	}

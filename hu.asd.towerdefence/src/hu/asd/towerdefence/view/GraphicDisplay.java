@@ -2,11 +2,13 @@ package hu.asd.towerdefence.view;
 /**
  * @author Ruzsics David
  */
+import hu.asd.towerdefence.Controller;
 import hu.asd.towerdefence.Enemy;
 import hu.asd.towerdefence.Game;
-import hu.asd.towerdefence.Road;
-import hu.asd.towerdefence.Swamp;
+import hu.asd.towerdefence.Gem;
+import hu.asd.towerdefence.Printer;
 import hu.asd.towerdefence.TDActionListener;
+import hu.asd.towerdefence.Tile;
 import hu.asd.towerdefence.Tower;
 
 import java.awt.BorderLayout;
@@ -14,14 +16,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -29,9 +33,16 @@ import javax.swing.border.EmptyBorder;
 public class GraphicDisplay implements TDActionListener{
 
 	Game game;
+	Controller cntrl;
+	private MapView mv;
 	private JFrame frame;
+	private JPanel panel;
+	private ToolbarView tbv;
+	private JComponent mPanel;
+
 	
 	public GraphicDisplay() {
+		cntrl = new Controller();
 		frame = new JFrame("Ket Torony");
 	//	frame.setBounds(100, 100, 500, 500);
 		frame.setMinimumSize(new Dimension(500,660));
@@ -41,29 +52,34 @@ public class GraphicDisplay implements TDActionListener{
 	
 	public void setup(){
 		frame.setLayout(new BorderLayout());
-		game.init();
-		
+		mPanel.setVisible(false);
 		//creating the mapView
-		MapView mv  = new MapView(game.getMap());
-		mv.setPreferredSize(new Dimension(500,500));
+
+		mv  = new MapView(game.getMap());
+		mv.setCntrl(cntrl);
+		mv.setPreferredSize(new Dimension(1000,500));
 		frame.add(mv, BorderLayout.NORTH);
-		mv.paint(frame.getGraphics());
-		//mv.repaint();
+	
 		
 		//creating the toolbar
 		JPanel toolbarPanel = new JPanel();
-		ToolbarView tbv = new ToolbarView(game);
+		tbv = new ToolbarView(game);
+		tbv.setCntrl(cntrl);
 		toolbarPanel.setPreferredSize(new Dimension(500,100));
 		toolbarPanel.add(tbv);
 		frame.add(toolbarPanel, BorderLayout.SOUTH);
 		toolbarPanel.setVisible(true);
 		frame.add(toolbarPanel);
-		//frame.pack();	
+		frame.pack();	
+		frame.validate();
+		frame.repaint();
+		game.start();
+
 	}
 	
 	public void menu(){
 		//create the panel
-		final JPanel mPanel = new JPanel();
+		mPanel = new JPanel();
 		frame.add(mPanel);
 		mPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 		mPanel.setLayout(new GridLayout(4,1));
@@ -91,7 +107,9 @@ public class GraphicDisplay implements TDActionListener{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				game.load("game.asd");
+				game.load(Game.SAVED_GAME);
+				setup();
+				
 			}});
 		JButton exitGame = new JButton("EXIT");
 		exitGame.setBorder(BorderFactory.createLineBorder(new Color(53, 56, 64), 20));
@@ -114,96 +132,54 @@ public class GraphicDisplay implements TDActionListener{
 	@Override
 	public void setGame(Game game) {
 		this.game=game;
+		cntrl.setGame(game);
+	}
+
+	private void repaint(){
+		mv.repaint();
+	}
+	
+	@Override
+	public void onTowerAction(Tower t) {
+		repaint();
 		
 	}
 
 	@Override
-	public void onEnemyDamage(Enemy e, int damage) {
-		// TODO Auto-generated method stub
+	public void onEnemyAction(Enemy e) {
+		mv.updateEnemy(e);
+		Toolkit.getDefaultToolkit().beep();
 		
 	}
 
 	@Override
-	public void onEnemyMovement(Enemy e) {
-		// TODO Auto-generated method stub
+	public void onMapAction(Tile t) {
+		repaint();
 		
 	}
 
 	@Override
-	public void onEnemyBlock(Enemy e) {
-		// TODO Auto-generated method stub
+	public void onMPAction() {
+		tbv.repaint();
+	}
+
+	@Override
+	public void onGemAction(Gem gem) {
+		tbv.repaint();
 		
 	}
 
 	@Override
-	public void onTowerShooting(Tower t, Enemy e) {
-		// TODO Auto-generated method stub
-		
+	public void onGameOver(boolean playerHasWon) {
+		if (playerHasWon)
+			JOptionPane.showMessageDialog(null, "You won");	
+		else
+			JOptionPane.showMessageDialog(null, "You lost");	
+		System.exit(0);
 	}
 
 	@Override
-	public void onTowerNotShooting(Tower t) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onTowerUpgrade(Tower t) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onTowerFog(Tower t) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onSwampAdded(Swamp s) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void notEnoughMP() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void wrongTileSelected() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onMPGain() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onEnemyCreated(Enemy newEnemy) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onNoEnemyInSight(Tower tower) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onEnteredRoad(Enemy enemy, Road road) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onLeftRoad(Enemy enemy, Road road) {
-		// TODO Auto-generated method stub
-		
+	public void onError(String message) {
+		JOptionPane.showMessageDialog(null, message);	
 	}
 }
