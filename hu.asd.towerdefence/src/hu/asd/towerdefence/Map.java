@@ -243,13 +243,17 @@ public class Map {
 			s.setListener(listener);
 			if (MagicPower.decrease(s)) {
 				listener.onMPAction();
-				map.set(map.indexOf(tile), s);
+				Tile prev = map.set(map.indexOf(tile), s);
 
 				// tell neighbouring tiles that they have a new neighbour
 				for (Tile t : s.getNeighbours()) {
 					t.setNeighbour(s);
+					t.removeNeighbour(prev);
 				}
-
+				
+				//toroljuk az elozot
+				prev=null;
+				
 				listener.onMapAction(s);
 			} else
 				listener.onError(TDActionListener.NO_MP);

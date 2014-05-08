@@ -14,7 +14,7 @@ public class MapBuilder {
 	// palya elkeszitese
 	public void createMap(Map map) {
 
-		// 5x5 test map
+		// map
 		int mapX = 10;
 		int mapY = 20;
 		char[][] charmap = { 
@@ -45,20 +45,26 @@ public class MapBuilder {
 
 		}
 
+		//set up neighbours
 		for (int i = 0; i < mapX; i++) {
 			for (int j = 0; j < mapY; j++) {
 				if (i - 1 >= 0) {
 					t[i - 1][j].setNeighbour(t[i][j]);
 				}
+								
 				if (i + 1 < mapX) {
 					t[i + 1][j].setNeighbour(t[i][j]);
 				}
+				
+				
 				if (j - 1 >= 0) {
 					t[i][j - 1].setNeighbour(t[i][j]);
 				}
 				if (j + 1 < mapY) {
 					t[i][j + 1].setNeighbour(t[i][j]);
 				}
+				
+				
 			}
 		}
 

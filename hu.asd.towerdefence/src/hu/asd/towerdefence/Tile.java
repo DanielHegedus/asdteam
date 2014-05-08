@@ -24,6 +24,11 @@ public abstract class Tile {
 	public void setListener(TDActionListener listener) {
 		this.listener=listener;
 	}
+
+	public void removeNeighbour(Tile prev) {
+		neighbours.remove(prev);
+		
+	}
 	
 
 }

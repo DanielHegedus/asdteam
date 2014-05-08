@@ -102,9 +102,12 @@ public class MapView extends JPanel{
 					
 				
 				if (r.hasEnemy() != null){
+					int offset=20;
 					for (Enemy e : r.getEnemies()){
 						EnemyView ev = getEnemyView(e);
-						ev.setCoords(x, y);
+						ev.setCoords(x+offset, y+offset);
+						offset+=5;
+						if (offset > 20) offset=0;
 						ev.paint(g);
 						
 					}

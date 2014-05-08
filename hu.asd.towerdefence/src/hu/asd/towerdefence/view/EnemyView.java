@@ -4,6 +4,7 @@ import hu.asd.towerdefence.Dwarf;
 import hu.asd.towerdefence.Elf;
 import hu.asd.towerdefence.Enemy;
 import hu.asd.towerdefence.Hobbit;
+import hu.asd.towerdefence.Human;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -37,18 +38,23 @@ public class EnemyView extends Component{
 		File h = new File("img/hobbit.png");
 		File d = new File("img/dwarf.png");
 		File e = new File("img/elf.png");
+		File u = new File("img/human.png");
 		
 		File hd = new File("img/hobbit_dmg.png");
 		File dd = new File("img/dwarf_dmg.png");
 		File ed = new File("img/elf_dmg.png");
+		File ud = new File("img/human_dmg.png");
 		try {
 			hobbit = ImageIO.read(h);
 			dwarf = ImageIO.read(d);
 			elf=ImageIO.read(e);
+			human=ImageIO.read(u);
 			
 			hobbitDamage = ImageIO.read(hd);
 			dwarfDamage = ImageIO.read(dd);
 			elfDamage=ImageIO.read(ed);
+			humanDamage=ImageIO.read(ud);
+			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -61,11 +67,11 @@ public class EnemyView extends Component{
 	public void paint(Graphics g){
 	
 		g.setColor(Color.BLACK);
-		g.drawRect(x+10, y-20, 30, 5);
+		g.drawRect(x+3, y-10, 20, 5);
 		g.setColor(Color.RED);
-		g.fillRect(x+11, y-19, 29, 4);
+		g.fillRect(x+4, y-9, 19, 4);
 		g.setColor(Color.GREEN);
-		g.fillRect(x+11, y-19, (int) (((enemy.getHP()*1.0)/(enemy.defHP*1.0))*30)-1, 4);
+		g.fillRect(x+4, y-9, (int) (((enemy.getHP()*1.0)/(enemy.defHP*1.0))*20)-1, 4);
 		
 		if (takingDamage){
 			if (getEnemy() instanceof Hobbit)
@@ -74,6 +80,8 @@ public class EnemyView extends Component{
 				g.drawImage(dwarfDamage,x,y,null);
 			else if (getEnemy() instanceof Elf)
 				g.drawImage(elfDamage,x,y,null);
+			else if (getEnemy() instanceof Human)
+				g.drawImage(humanDamage,x,y,null);
 			takingDamage=false;
 		}
 		if (getEnemy() instanceof Hobbit)
@@ -82,6 +90,8 @@ public class EnemyView extends Component{
 			g.drawImage(dwarf,x,y,null);
 		else if (getEnemy() instanceof Elf)
 			g.drawImage(elf,x,y,null);
+		else if (getEnemy() instanceof Human)
+			g.drawImage(human,x,y,null);
 	}
 	
 	public void setCoords(int x, int y){

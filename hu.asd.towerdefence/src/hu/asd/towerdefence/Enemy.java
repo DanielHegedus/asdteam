@@ -68,7 +68,8 @@ public abstract class Enemy implements Serializable{
 	// minden hivasnal eggyel csokkenti a blocktime-ot, visszaadja annak
 	// értékét.
 	public int timeToMove() {
-		return --blockTime;
+		blockTime--;
+		return blockTime;
 	}
 
 	// beallitja a blocktime valtozo erteket
