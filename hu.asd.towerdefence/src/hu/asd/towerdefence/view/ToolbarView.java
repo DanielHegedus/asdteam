@@ -137,7 +137,7 @@ public class ToolbarView extends JPanel {
 			Gem gem=game.getMap().getGem();
 			String gemstring="-";
 			if (gem!=null){
-				gemstring=gem.getClass().getSimpleName().substring(0,2);
+				gemstring=gem.getClass().getSimpleName().substring(0,3);
 			}
 			gemLabel.setText("GEM: "+gemstring);
 		}

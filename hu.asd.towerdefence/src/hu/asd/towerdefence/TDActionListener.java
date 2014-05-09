@@ -9,6 +9,7 @@ public interface TDActionListener {
 	
 	public static final String NO_MP = "Not enough MP";
 	public static final String WRONG_TILE = "Wrong tile selected";
+	public static final String NO_GEM = "You need a gem";
 	
 	public void setGame(Game game);
 	

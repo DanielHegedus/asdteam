@@ -7,20 +7,22 @@ public class Controller {
 	private Game game;
 	
 	public void tileAction(Tile t) {
-		if(game.getMap().getGem() != null){
+		if(newTower){
+			getGame().getMap().addTower(t);
+			newTower = false;
+		}
+		else if(newSwamp){
+			getGame().getMap().addSwamp(t);
+			newSwamp = false;
+		}
+		else if(game.getMap().getGem() != null){
 			if(t instanceof Field)
 				getGame().getMap().upgradeTower((Field)t);
 			else if(t instanceof Swamp)
 				getGame().getMap().upgradeSwamp((Swamp)t);
 		}
-		if(newTower){
-			getGame().getMap().addTower(t);
-			newTower = false;
-		}
-		if(newSwamp){
-			getGame().getMap().addSwamp(t);
-			newSwamp = false;
-		}
+		
+		
 	}
 	
 	public void setNewTower(boolean bool) {

@@ -38,7 +38,7 @@ public class Tower implements Serializable{
 	// ?
 	public void doDamage(Enemy e) {
 		//isSplitting added for debug purposes
-		if (Math.random()<0.2 || isSplitting()) {
+		if (Math.random()<0.1 || isSplitting()) {
 			setSplit(false);
 			Enemy newEnemy;
 			try {

@@ -284,7 +284,7 @@ public class Map {
 
 	// mocsar hozzaadasa
 	public void addSwamp(Tile tile) {
-		if (tile instanceof Road) {
+		if (tile.getClass() == Road.class) {
 			Swamp s = new Swamp((Road) tile);
 			s.setListener(listener);
 			if (MagicPower.decrease(s)) {
@@ -360,27 +360,26 @@ public class Map {
 	public void upgradeTower(Field field) {
 		// fejlesztes SpdTowerre
 		if (this.gem instanceof SpdGem) {
-			if (field.getTower() != null) {
+			if (field.getTower() != null && !(field.getTower() instanceof SpdTower)) {
 				Tower prevT = field.getTower();
 				SpdTower st = new SpdTower();
 				
 				towers.remove(prevT);
 				towers.add(st);
 				
-				
 				st.addListener(listener);
 				st.setField(field);
 				field.setTower(st);
 				setGem(null);
-				Printer.printUpgradeTower(prevT, st, this, field); // prints the
+				listener.onMapAction(field);
 																	// output
 			} else {
-				Printer.printError("There is no tower on this field");
+				listener.onError(TDActionListener.WRONG_TILE);
 			}
 		}
 		// fejlesztes DmgTowerre
 		else if (this.gem instanceof DmgGem) {
-			if (field.getTower() != null) {
+			if (field.getTower() != null && !(field.getTower() instanceof DmgTower)) {
 				Tower prevT = field.getTower();
 				DmgTower dt = new DmgTower();
 				
@@ -391,15 +390,12 @@ public class Map {
 				dt.setField(field);
 				field.setTower(dt);
 				setGem(null);
-				Printer.printUpgradeTower(prevT, dt, this, field); // prints the
-																	// output
+				listener.onMapAction(field);
 			} else {
-				Printer.printError("There is no tower on this field");
+				listener.onError(TDActionListener.WRONG_TILE);
 			}
 		} else {
-			Printer.printError("There is no gem for tower upgrade."
-					+ " You can buy gems with the buyGem command"
-					+ " or use 'dmg' or 'spd' after the command to upgrade the tower without gem.");
+			listener.onError(TDActionListener.NO_GEM);
 		}
 
 	}
@@ -413,15 +409,14 @@ public class Map {
 			sswamp.setListener(listener);
 			Tile prev = map.set(map.indexOf(swamp), sswamp);
 			setGem(null);
-			Printer.printUpgradeSwamp(this, sswamp);
+			listener.onMapAction(sswamp);
 			// tell neighbouring tiles that they have a new neighbour
 			for (Tile t : sswamp.getNeighbours()) {
 				t.setNeighbour(sswamp);
 				t.removeNeighbour(prev);
 			}
 		} else {
-			Printer.printError("There is no gem for swamp upgrade."
-					+ "Try the upgradeSwamp x y -nogem command or buy gem with 'buyGem swp'.");
+			listener.onError(TDActionListener.NO_GEM);
 		}
 	}
 
@@ -430,7 +425,7 @@ public class Map {
 		if (tile instanceof Field)
 			upgradeTower((Field) tile);
 		else
-			Printer.printError("This is not a field. You can't put tower there.");
+			listener.onError(TDActionListener.WRONG_TILE);
 	}
 
 	public List<Tower> getTowers() {

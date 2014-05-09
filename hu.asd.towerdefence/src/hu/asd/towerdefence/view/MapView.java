@@ -192,11 +192,10 @@ public class MapView extends JPanel {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
+			//megkeressuk a tile-t a kattintas koordinatai alapjan
 			int y = e.getX() / tilesize;
 			int x = e.getY() / tilesize;
 			int tile = x * map.getSize() + y;
-			System.out.println(x + " " + y);
 			getCntrl().tileAction(map.getMap().get(tile));
 		}
 
