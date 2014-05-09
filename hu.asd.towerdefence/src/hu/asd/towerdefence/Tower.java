@@ -101,13 +101,14 @@ public class Tower implements Serializable{
 			listener.onTowerAction(this);
 			return;
 		}
-		setTimeleft(defTimeleft);
+		
 		if (isInFog()) {
 			for (Road r : closeNeighbours) {
 				if (r.hasEnemy() != null) {
 					Enemy e = r.hasEnemy();
 					listener.onTowerAction(this);
 					e.shoot(this);
+					setTimeleft(defTimeleft);
 					return;
 				}
 
@@ -117,6 +118,7 @@ public class Tower implements Serializable{
 				if (r.hasEnemy() != null) {
 					Enemy e = r.hasEnemy();
 					listener.onTowerAction(this);
+					setTimeleft(defTimeleft);
 					e.shoot(this);
 					return;
 				}
