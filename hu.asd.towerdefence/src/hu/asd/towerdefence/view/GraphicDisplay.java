@@ -38,51 +38,57 @@ public class GraphicDisplay implements TDActionListener{
 	private JFrame frame;
 	private JPanel panel;
 	private ToolbarView tbv;
-	private JComponent mPanel;
+	private JPanel mPanel;
 
 	
 	public GraphicDisplay() {
 		cntrl = new Controller();
-		frame = new JFrame("Ket Torony");
+		setFrame(new JFrame("Ket Torony"));
 	//	frame.setBounds(100, 100, 500, 500);
-		frame.setMinimumSize(new Dimension(500,660));
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getFrame().setMinimumSize(new Dimension(500,660));
+		getFrame().setVisible(true);
+		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	public void setup(){
-		frame.setLayout(new BorderLayout());
-		mPanel.setVisible(false);
+		getFrame().setPreferredSize(new Dimension(1016,500));
+		getFrame().setLayout(new BorderLayout());
+		getmPanel().setVisible(false);
 		//creating the mapView
-
-		mv  = new MapView(game.getMap());
-		mv.setCntrl(cntrl);
-		mv.setPreferredSize(new Dimension(1000,500));
-		frame.add(mv, BorderLayout.NORTH);
+		//game.restart();
+		setMv(new MapView(game.getMap()));
+		getMv().setCntrl(cntrl);
+		getMv().setPreferredSize(new Dimension(1000,500));
+		getFrame().add(getMv(), BorderLayout.NORTH); 
 	
 		
 		//creating the toolbar
-		JPanel toolbarPanel = new JPanel();
-		tbv = new ToolbarView(game);
-		tbv.setCntrl(cntrl);
-		toolbarPanel.setPreferredSize(new Dimension(500,100));
-		toolbarPanel.add(tbv);
-		frame.add(toolbarPanel, BorderLayout.SOUTH);
-		toolbarPanel.setVisible(true);
-		frame.add(toolbarPanel);
-		frame.pack();	
-		frame.validate();
-		frame.repaint();
+		//JPanel toolbarPanel = new JPanel();
+		setTbv(new ToolbarView(game, this));
+		tbv.setVisible(true);
+		getTbv().setCntrl(cntrl);
+		//toolbarPanel.setPreferredSize(new Dimension(500,100));
+		//toolbarPanel.add(getTbv());
+		tbv.setPreferredSize(new Dimension(500,100));
+	//	getFrame().add(toolbarPanel, BorderLayout.SOUTH);
+		getFrame().add(tbv, BorderLayout.SOUTH);
+		//toolbarPanel.setVisible(true);
+		//getFrame().add(toolbarPanel);
+		getFrame().add(tbv);
+		getFrame().pack();	
+		getFrame().validate();
+		getFrame().repaint();
 		game.start();
 
 	}
 	
 	public void menu(){
 		//create the panel
-		mPanel = new JPanel();
-		frame.add(mPanel);
-		mPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-		mPanel.setLayout(new GridLayout(4,1));
+		getFrame().setPreferredSize(new Dimension(500,660));
+		setmPanel(new JPanel());
+		getFrame().add(getmPanel());
+		getmPanel().setBorder(new EmptyBorder(20, 20, 20, 20));
+		getmPanel().setLayout(new GridLayout(4,1));
 		//create and format the title
 		JLabel title = new JLabel("ASD TEAM - TOWER DEFENSE");
 		title.setHorizontalAlignment(SwingConstants.CENTER);
@@ -97,7 +103,7 @@ public class GraphicDisplay implements TDActionListener{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setup();
-				mPanel.setVisible(false);
+				getmPanel().setVisible(false);
 			}});
 		
 		JButton loadGame = new JButton("LOAD GAME");
@@ -121,13 +127,13 @@ public class GraphicDisplay implements TDActionListener{
 				System.exit(0);				
 			}});
 		//add components to the panel
-		mPanel.add(title);
-		mPanel.add(newGame);
-		mPanel.add(loadGame);
-		mPanel.add(exitGame);
-		mPanel.setBackground(new Color(53, 56, 64));
-		mPanel.setVisible(true);
-		frame.validate();
+		getmPanel().add(title);
+		getmPanel().add(newGame);
+		getmPanel().add(loadGame);
+		getmPanel().add(exitGame);
+		getmPanel().setBackground(new Color(53, 56, 64));
+		getmPanel().setVisible(true);
+		getFrame().validate();
 	}
 
 	@Override
@@ -137,7 +143,7 @@ public class GraphicDisplay implements TDActionListener{
 	}
 
 	private void repaint(){
-		mv.repaint();
+		getMv().repaint();
 	}
 	
 	@Override
@@ -148,8 +154,8 @@ public class GraphicDisplay implements TDActionListener{
 
 	@Override
 	public void onEnemyAction(Enemy e) {
-		if (mv!=null)
-			mv.updateEnemy(e);		
+		if (getMv()!=null)
+			getMv().updateEnemy(e);		
 	}
 
 	@Override
@@ -160,19 +166,19 @@ public class GraphicDisplay implements TDActionListener{
 
 	@Override
 	public void onMPAction() {
-		tbv.repaint();
+		getTbv().repaint();
 	}
 
 	@Override
 	public void onGemAction(Gem gem) {
-		tbv.repaint();
+		getTbv().repaint();
 		
 	}
 
 	@Override
 	public void onGameOver(boolean playerHasWon) {
-		mv.gameOver(playerHasWon);
-		mv.repaint();
+		getMv().gameOver(playerHasWon);
+		getMv().repaint();
 //		if (playerHasWon)
 //			JOptionPane.showMessageDialog(null, "You won");	
 //		else
@@ -183,5 +189,37 @@ public class GraphicDisplay implements TDActionListener{
 	@Override
 	public void onError(String message) {
 		JOptionPane.showMessageDialog(null, message);	
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public MapView getMv() {
+		return mv;
+	}
+
+	public void setMv(MapView mv) {
+		this.mv = mv;
+	}
+
+	public ToolbarView getTbv() {
+		return tbv;
+	}
+
+	public void setTbv(ToolbarView tbv) {
+		this.tbv = tbv;
+	}
+
+	public JPanel getmPanel() {
+		return mPanel;
+	}
+
+	public void setmPanel(JPanel mPanel) {
+		this.mPanel = mPanel;
 	}
 }
