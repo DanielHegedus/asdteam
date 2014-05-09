@@ -171,11 +171,13 @@ public class GraphicDisplay implements TDActionListener{
 
 	@Override
 	public void onGameOver(boolean playerHasWon) {
-		if (playerHasWon)
-			JOptionPane.showMessageDialog(null, "You won");	
-		else
-			JOptionPane.showMessageDialog(null, "You lost");	
-		System.exit(0);
+		mv.gameOver(playerHasWon);
+		mv.repaint();
+//		if (playerHasWon)
+//			JOptionPane.showMessageDialog(null, "You won");	
+//		else
+//			JOptionPane.showMessageDialog(null, "You lost");	
+//		System.exit(0);
 	}
 
 	@Override
