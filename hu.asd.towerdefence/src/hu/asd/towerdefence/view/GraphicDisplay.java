@@ -148,7 +148,8 @@ public class GraphicDisplay implements TDActionListener{
 
 	@Override
 	public void onEnemyAction(Enemy e) {
-		mv.updateEnemy(e);		
+		if (mv!=null)
+			mv.updateEnemy(e);		
 	}
 
 	@Override

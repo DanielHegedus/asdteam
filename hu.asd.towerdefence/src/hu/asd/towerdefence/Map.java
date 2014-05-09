@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 
 public class Map {
 
-	// a jatekban szereplo fontosabb objektumok listaja
+	private static final int WAIT = 0;
 	private Gem gem;
 	private Mordor mordor;
 	private List<Tile> map;
@@ -29,8 +29,29 @@ public class Map {
 	private int size;
 	private Game game;
 	private TDActionListener listener;
+	private int counter;
+	private List<Enemy> enemiesToAdd;
 
 	public Map() {
+		counter=0;
+		enemiesToAdd=new ArrayList<Enemy>();
+		enemiesToAdd.add(new Hobbit());
+		enemiesToAdd.add(new Hobbit());
+		enemiesToAdd.add(new Human());
+		enemiesToAdd.add(null);
+		enemiesToAdd.add(null);
+		enemiesToAdd.add(null);
+		enemiesToAdd.add(null);
+		enemiesToAdd.add(new Dwarf());
+		enemiesToAdd.add(new Human());
+		enemiesToAdd.add(new Elf());
+		enemiesToAdd.add(null);
+		enemiesToAdd.add(null);
+		enemiesToAdd.add(null);
+		enemiesToAdd.add(null);
+		enemiesToAdd.add(new Dwarf());
+		enemiesToAdd.add(new Human());
+		enemiesToAdd.add(new Dwarf());
 		map = new ArrayList<Tile>();
 		setTowers(new ArrayList<Tower>());
 	}
@@ -100,6 +121,7 @@ public class Map {
 
 	// minden tickre lefuto metodus
 	public void onTick() {
+				
 		List<Enemy> enemies = new ArrayList<Enemy>();
 		for (Tile t : getMap()) {
 			if (t instanceof Road) {
@@ -114,7 +136,8 @@ public class Map {
 			game.gameOver(false);
 		}
 
-		if (enemies.size() == 0 && mordor.hasEnemy() == null)
+		if (enemies.size() == 0 && mordor.hasEnemy() == null 
+				&& enemiesToAdd.get(enemiesToAdd.size()-1)==null)
 			game.gameOver(true);
 
 		for (Enemy e : enemies)
@@ -129,6 +152,18 @@ public class Map {
 			int index=((int) (Math.random()*towers.size()));
 			towers.get(index).setFog(true);
 			//System.out.println(index);
+		}
+		
+		
+		if (counter>=WAIT && counter-WAIT<enemiesToAdd.size()){
+			Enemy e = enemiesToAdd.get(counter-WAIT);
+			if (e!= null){
+				addEnemy(e);
+				enemiesToAdd.set(counter-WAIT, null);
+			}
+			counter++;
+		}else{
+			counter++;
 		}
 
 	}
@@ -153,6 +188,7 @@ public class Map {
 		// setting the MP and gem
 		gd.setMP(MagicPower.getMP());
 		gd.setGem(gem);
+		gd.setCounter(counter);
 
 		// adding the enemies
 		List<Enemy> enemyList = new ArrayList<Enemy>();
@@ -196,17 +232,7 @@ public class Map {
 
 	
 	public void setData(GameData gd) {
-		// restoring the enemies
-		for (Entry<int[], Enemy> entry : gd.getEnemies().entrySet()) {
-			// get the values
-			int[] pos = entry.getKey();
-			Enemy e = entry.getValue();
-			// get the tile
-			Tile t = map.get(pos[0] * size + pos[1]);
-			// add the enemy
-			((Road) t).enter(e);
-		}
-
+		
 		// the towers
 		for (Entry<int[], Tower> entry : gd.getTowers().entrySet()) {
 			int[] pos = entry.getKey();
@@ -214,6 +240,7 @@ public class Map {
 			Tile t = map.get(pos[0] * size + pos[1]);
 			Field f = (Field) t;
 			tower.setField(f);
+			tower.addListener(listener);
 			towers.add(tower);
 		}
 
@@ -221,19 +248,38 @@ public class Map {
 		for (Entry<int[], Swamp> entry : gd.getSwamps().entrySet()) {
 			int[] pos = entry.getKey();
 			Swamp s = entry.getValue();
-			Tile t = map.get(pos[0] * size + pos[1]);
-			map.set(pos[0] * size + pos[1], s);
+			s.setListener(listener);
+			Tile prev = map.set(pos[0] * size + pos[1], s);
+			
+			for (Tile t : prev.getNeighbours()){
+				s.setNeighbour(t);
+			}
 			// tell neighbouring tiles that they have a new neighbour
 			for (Tile tl : s.getNeighbours()) {
 				tl.setNeighbour(s);
+				tl.removeNeighbour(prev);
 			}
 		}
+		
+		// restoring the enemies
+				for (Entry<int[], Enemy> entry : gd.getEnemies().entrySet()) {
+					// get the values
+					int[] pos = entry.getKey();
+					Enemy e = entry.getValue();
+					// get the tile
+					Tile t = map.get(pos[0] * size + pos[1]);
+					// add the enemy
+					((Road) t).enter(e);
+				}
 
 		// set the MP
 		MagicPower.setMP(gd.getMp());
 
 		// set the gem
 		gem = gd.getGem();
+		
+		//the counter
+		this.counter=gd.getCounter();
 	}
 
 	// mocsar hozzaadasa

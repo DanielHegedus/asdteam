@@ -11,6 +11,7 @@ public class GameData implements Serializable{
 	private HashMap<int[],Swamp> swamps;
 	private Gem gem;
 	private int mp;
+	private int counter;
 	
 	public GameData(){
 		setTowers(new HashMap<int[],Tower>());
@@ -72,6 +73,14 @@ public class GameData implements Serializable{
 
 	public void setMp(int mp) {
 		this.mp = mp;
+	}
+
+	public int getCounter() {
+		return counter;
+	}
+
+	public void setCounter(int counter) {
+		this.counter = counter;
 	}
 
 }
