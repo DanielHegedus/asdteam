@@ -1,13 +1,13 @@
-///**
-// * ConsoleDisplay.java
-// * 
-// * Basic console interface for displaying game events
-// */
-//
-//package hu.asd.towerdefence;
-//
-//public class ConsoleDisplay implements TDActionListener{
-//
+/**
+ * ConsoleDisplay.java
+ * 
+ * Basic console interface for displaying game events
+ */
+
+package hu.asd.towerdefence;
+
+public class ConsoleDisplay{
+
 //	private Game game;
 //	
 //	//set the game
@@ -164,5 +164,5 @@
 //		// TODO Auto-generated method stub
 //		
 //	}
-//
-//}
+
+}

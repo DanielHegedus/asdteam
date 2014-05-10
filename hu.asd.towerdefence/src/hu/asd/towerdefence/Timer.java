@@ -8,17 +8,18 @@ public class Timer{
 	private Game game; // jatekunk peldanya
 	private javax.swing.Timer timer;
 	
-	public Timer(Game game){
-		this.game=game;
-	}
-	
-	//elinditja a timert
-	public void start() {
+	public Timer(Game g){
+		this.game=g;
 		timer = new javax.swing.Timer(TIMER_DELAY, new ActionListener() {
 		     public void actionPerformed(ActionEvent e) {
 		        game.getMap().onTick();
 		     }
 		  });
+	}
+	
+	//elinditja a timert
+	public void start() {
+		
 		timer.start();
 		
 	}

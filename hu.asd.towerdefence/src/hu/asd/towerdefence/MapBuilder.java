@@ -9,6 +9,9 @@
 
 package hu.asd.towerdefence;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapBuilder {
 
 	// palya elkeszitese
@@ -68,15 +71,40 @@ public class MapBuilder {
 			}
 		}
 
+		//add the tiles
 		for (Tile[] tl : t) {
 			for (Tile tile : tl) {
 				map.addTile(tile);
 			}
 		}
 		
+		//set start and finish
 		map.setStart((Road) t[9][0]);
 		map.setMordor((Mordor) t[0][19]);
 		map.setSize(mapY);
+		
+		//add the enemies
+		
+		List<Enemy> enemies=new ArrayList<Enemy>();
+		enemies.add(new Hobbit());
+		enemies.add(new Hobbit());
+		enemies.add(new Human());
+		enemies.add(null);
+		enemies.add(null);
+		enemies.add(null);
+		enemies.add(null);
+		enemies.add(new Dwarf());
+		enemies.add(new Human());
+		enemies.add(new Elf());
+		enemies.add(null);
+		enemies.add(null);
+		enemies.add(null);
+		enemies.add(null);
+		enemies.add(new Dwarf());
+		enemies.add(new Human());
+		enemies.add(new Dwarf());
+		map.setEnemiesToAdd(enemies);
+		
 
 	}
 }

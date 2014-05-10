@@ -34,24 +34,6 @@ public class Map {
 
 	public Map() {
 		counter=0;
-		enemiesToAdd=new ArrayList<Enemy>();
-		enemiesToAdd.add(new Hobbit());
-		enemiesToAdd.add(new Hobbit());
-		enemiesToAdd.add(new Human());
-		enemiesToAdd.add(null);
-		enemiesToAdd.add(null);
-		enemiesToAdd.add(null);
-		enemiesToAdd.add(null);
-		enemiesToAdd.add(new Dwarf());
-		enemiesToAdd.add(new Human());
-		enemiesToAdd.add(new Elf());
-		enemiesToAdd.add(null);
-		enemiesToAdd.add(null);
-		enemiesToAdd.add(null);
-		enemiesToAdd.add(null);
-		enemiesToAdd.add(new Dwarf());
-		enemiesToAdd.add(new Human());
-		enemiesToAdd.add(new Dwarf());
 		map = new ArrayList<Tile>();
 		setTowers(new ArrayList<Tower>());
 	}
@@ -137,7 +119,7 @@ public class Map {
 		}
 
 		if (enemies.size() == 0 && mordor.hasEnemy() == null 
-				&& enemiesToAdd.get(enemiesToAdd.size()-1)==null)
+				&& getEnemiesToAdd().get(getEnemiesToAdd().size()-1)==null)
 			game.gameOver(true);
 
 		for (Enemy e : enemies)
@@ -155,11 +137,11 @@ public class Map {
 		}
 		
 		
-		if (counter>=WAIT && counter-WAIT<enemiesToAdd.size()){
-			Enemy e = enemiesToAdd.get(counter-WAIT);
+		if (counter>=WAIT && counter-WAIT<getEnemiesToAdd().size()){
+			Enemy e = getEnemiesToAdd().get(counter-WAIT);
 			if (e!= null){
 				addEnemy(e);
-				enemiesToAdd.set(counter-WAIT, null);
+				getEnemiesToAdd().set(counter-WAIT, null);
 			}
 			counter++;
 		}else{
@@ -343,7 +325,7 @@ public class Map {
 		if (tile instanceof Road)
 			addSwamp(tile);
 		else
-			Printer.printError("You can't put a swamp there.");
+			listener.onError(TDActionListener.WRONG_TILE);
 	}
 
 	// koordinatak azonositasa a palyan, majd tovabbadni az upgradenek az
@@ -353,7 +335,7 @@ public class Map {
 		if (tile instanceof Swamp)
 			upgradeSwamp((Swamp) tile);
 		else
-			Printer.printError("No swamp there to upgrade.");
+			listener.onError(TDActionListener.WRONG_TILE);
 	}
 
 	// torony fejlesztese az adott fielden
@@ -434,6 +416,15 @@ public class Map {
 
 	public void setTowers(List<Tower> towers) {
 		this.towers = towers;
+	}
+
+	public List<Enemy> getEnemiesToAdd() {
+		return enemiesToAdd;
+	}
+
+	public void setEnemiesToAdd(List<Enemy> enemiesToAdd) {
+		counter=0;
+		this.enemiesToAdd = enemiesToAdd;
 	}
 
 }

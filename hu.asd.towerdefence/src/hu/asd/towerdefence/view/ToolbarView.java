@@ -213,9 +213,9 @@ public class ToolbarView extends JPanel {
 				gd.getFrame().setPreferredSize(new Dimension(500,660));
 				
 				//refreshing the game
-				gd.game = new Game(gd);
-				gd.game.init();
-				gd.setGame(gd.game);
+//				gd.game = new Game(gd);
+//				gd.game.init();
+//				gd.setGame(gd.game);
 				gd.menu();
 			}
 			

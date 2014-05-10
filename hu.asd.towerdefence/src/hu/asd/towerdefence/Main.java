@@ -10,7 +10,7 @@ public class Main {
 
 		
 	public static void main(String args[]) {
-		MagicPower.setMP(999);
+		//MagicPower.setMP(999);
 		
 		GraphicDisplay gd = new GraphicDisplay();
 		Game game = new Game(gd);

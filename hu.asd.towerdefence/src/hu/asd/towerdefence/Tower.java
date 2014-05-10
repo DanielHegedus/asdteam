@@ -106,7 +106,7 @@ public class Tower implements Serializable{
 			for (Road r : closeNeighbours) {
 				if (r.hasEnemy() != null) {
 					Enemy e = r.hasEnemy();
-					listener.onTowerAction(this);
+					listener.onTowerAction(this);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 					e.shoot(this);
 					setTimeleft(defTimeleft);
 					return;

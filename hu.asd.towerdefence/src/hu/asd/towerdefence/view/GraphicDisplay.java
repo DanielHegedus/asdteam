@@ -102,6 +102,7 @@ public class GraphicDisplay implements TDActionListener{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				game.init();
 				setup();
 				getmPanel().setVisible(false);
 			}});

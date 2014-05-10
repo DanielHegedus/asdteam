@@ -43,9 +43,11 @@ public class Game {
 
 	// jatekter inicializalasa, megcsinalja a map-et
 	public void init() {
+		timer.stop();
 		setMap(new Map(this));
 		map.addListener(listener);
 		mapBuilder.createMap(getMap());
+		MagicPower.setMP(25);
 	}
 
 	// jatek inditasa
@@ -63,7 +65,7 @@ public class Game {
 
 	}
 
-	// jatek vege TODO
+	// jatek vege 
 	public void gameOver(boolean playerWon) {
 		listener.onGameOver(playerWon);
 		getTimer().stop();
