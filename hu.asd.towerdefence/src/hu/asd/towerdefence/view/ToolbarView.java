@@ -1,5 +1,9 @@
 package hu.asd.towerdefence.view;
-
+/**
+ * ToolbarView.java
+ * 
+ * Displays buttons and game related information
+ */
 import hu.asd.towerdefence.Controller;
 import hu.asd.towerdefence.DmgGem;
 import hu.asd.towerdefence.Game;
@@ -10,10 +14,8 @@ import hu.asd.towerdefence.SwpGem;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -36,15 +38,21 @@ public class ToolbarView extends JPanel {
 	public ToolbarView(final Game game, GraphicDisplay graphicDisplay){
 		this.game=game;
 		this.gd = graphicDisplay;
+		
 		//create and format the panels
-		//JPanel base = new JPanel();
+		
+		//top row - tower and swamp
 		JPanel topPanel = new JPanel();
 		topPanel.setBackground(new Color(53, 56, 64));
 		this.setPreferredSize(new Dimension(1016,150));
 		this.setBackground(new Color(53, 56, 64));
 		this.setBorder(new EmptyBorder(20, 20, 20, 20));
+		
+		//middle row - gems
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setBackground(new Color(53, 56, 64));
+		
+		//bottom row - save and menu
 		JPanel savePanel = new JPanel();
 		savePanel.setBackground(new Color(53, 56, 64));
 		JLabel gameMenuLabel = new JLabel("GAME MENU:"){
@@ -60,6 +68,8 @@ public class ToolbarView extends JPanel {
 	            setMaximumSize(getSize());
 	        }
 	    };
+	    
+	    //format
 		mpLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		mpLabel.setForeground(Color.white);
 		mpLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
@@ -69,6 +79,8 @@ public class ToolbarView extends JPanel {
 	            setMaximumSize(getSize());
 	        }
 	    };
+	    
+	    //format
 		gemLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		gemLabel.setForeground(Color.white);
 		gemLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
@@ -207,28 +219,30 @@ public class ToolbarView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//create the menu view TODO
+				//hide the map and toolbar
 				gd.getMv().setVisible(false);
 				gd.getTbv().setVisible(false);
 				gd.getFrame().setPreferredSize(new Dimension(500,660));
-				
-				//refreshing the game
-//				gd.game = new Game(gd);
-//				gd.game.init();
-//				gd.setGame(gd.game);
+				//show the menu
 				gd.menu();
 			}
 			
 		});
 	}
 	
+	//override the repaint method so it refreshes the gems and MP
 	public void repaint(){
 		super.repaint();
+		
+		//display the MP
 		if (mpLabel!=null)
 			mpLabel.setText("MAGICPOWER:  " + MagicPower.getMP());
+		
+		//display the gem
 		if (gemLabel!=null){
 			Gem gem=game.getMap().getGem();
 			String gemstring="---";
+			//if it's not null display the first 3 letters of the class name
 			if (gem!=null){
 				gemstring=gem.getClass().getSimpleName().substring(0,3);
 			}
@@ -237,6 +251,7 @@ public class ToolbarView extends JPanel {
 
 	}
 
+	//getters and setters
 	public Controller getCntrl() {
 		return cntrl;
 	}

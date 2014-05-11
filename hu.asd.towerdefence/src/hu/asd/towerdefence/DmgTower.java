@@ -1,4 +1,5 @@
 package hu.asd.towerdefence;
+@SuppressWarnings("serial")
 public class DmgTower extends Tower {
 	//DmgGem-mel megerositett torony objektuma
 	public DmgTower(){

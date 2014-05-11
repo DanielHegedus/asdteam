@@ -1,12 +1,15 @@
 package hu.asd.towerdefence.view;
 /**
+ * GraphicDisplay.java
+ * 
+ * TDActionListener implementation for displaying the game graphicly
+ * 
  * @author Ruzsics David
  */
 import hu.asd.towerdefence.Controller;
 import hu.asd.towerdefence.Enemy;
 import hu.asd.towerdefence.Game;
 import hu.asd.towerdefence.Gem;
-import hu.asd.towerdefence.Printer;
 import hu.asd.towerdefence.TDActionListener;
 import hu.asd.towerdefence.Tile;
 import hu.asd.towerdefence.Tower;
@@ -16,13 +19,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -36,26 +37,28 @@ public class GraphicDisplay implements TDActionListener{
 	Controller cntrl;
 	private MapView mv;
 	private JFrame frame;
-	private JPanel panel;
 	private ToolbarView tbv;
 	private JPanel mPanel;
 
 	
 	public GraphicDisplay() {
+		//create a new controller to process user actions
 		cntrl = new Controller();
+		
+		//create the frame and set some properies
 		setFrame(new JFrame("Ket Torony"));
-	//	frame.setBounds(100, 100, 500, 500);
 		getFrame().setMinimumSize(new Dimension(500,660));
 		getFrame().setVisible(true);
 		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	/**sets up the mapview and the frame for displaying the game*/
 	public void setup(){
+		//resize the frame so it fits the map better
 		getFrame().setPreferredSize(new Dimension(1016,500));
 		getFrame().setLayout(new BorderLayout());
 		getmPanel().setVisible(false);
-		//creating the mapView
-		//game.restart();
+		//create the mapview, pass the controller
 		setMv(new MapView(game.getMap()));
 		getMv().setCntrl(cntrl);
 		getMv().setPreferredSize(new Dimension(1000,500));
@@ -63,25 +66,24 @@ public class GraphicDisplay implements TDActionListener{
 	
 		
 		//creating the toolbar
-		//JPanel toolbarPanel = new JPanel();
 		setTbv(new ToolbarView(game, this));
 		tbv.setVisible(true);
 		getTbv().setCntrl(cntrl);
-		//toolbarPanel.setPreferredSize(new Dimension(500,100));
-		//toolbarPanel.add(getTbv());
 		tbv.setPreferredSize(new Dimension(500,100));
-	//	getFrame().add(toolbarPanel, BorderLayout.SOUTH);
 		getFrame().add(tbv, BorderLayout.SOUTH);
-		//toolbarPanel.setVisible(true);
-		//getFrame().add(toolbarPanel);
 		getFrame().add(tbv);
 		getFrame().pack();	
+		
+		//repaint and start the game
 		getFrame().validate();
 		getFrame().repaint();
 		game.start();
 
 	}
 	
+	/**
+	 * Builds and shows the game menu
+	 */
 	public void menu(){
 		//create the panel
 		getFrame().setPreferredSize(new Dimension(500,660));
@@ -136,6 +138,8 @@ public class GraphicDisplay implements TDActionListener{
 		getmPanel().setVisible(true);
 		getFrame().validate();
 	}
+	
+	//overridden methods from TDActionListener
 
 	@Override
 	public void setGame(Game game) {
@@ -180,11 +184,6 @@ public class GraphicDisplay implements TDActionListener{
 	public void onGameOver(boolean playerHasWon) {
 		getMv().gameOver(playerHasWon);
 		getMv().repaint();
-//		if (playerHasWon)
-//			JOptionPane.showMessageDialog(null, "You won");	
-//		else
-//			JOptionPane.showMessageDialog(null, "You lost");	
-//		System.exit(0);
 	}
 
 	@Override
@@ -192,6 +191,8 @@ public class GraphicDisplay implements TDActionListener{
 		JOptionPane.showMessageDialog(null, message);	
 	}
 
+	//getters and setters
+	
 	public JFrame getFrame() {
 		return frame;
 	}

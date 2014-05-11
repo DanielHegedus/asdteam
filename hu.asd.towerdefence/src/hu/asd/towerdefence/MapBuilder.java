@@ -84,7 +84,7 @@ public class MapBuilder {
 		map.setSize(mapY);
 		
 		//add the enemies
-		
+		//a null entry is a one tick pause
 		List<Enemy> enemies=new ArrayList<Enemy>();
 		enemies.add(new Hobbit());
 		enemies.add(new Hobbit());

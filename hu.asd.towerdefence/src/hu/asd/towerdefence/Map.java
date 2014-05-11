@@ -136,11 +136,13 @@ public class Map {
 			//System.out.println(index);
 		}
 		
-		
+		//if the initial wait time has passed and we still have enemies in the list
+		//add them to the start
 		if (counter>=WAIT && counter-WAIT<getEnemiesToAdd().size()){
 			Enemy e = getEnemiesToAdd().get(counter-WAIT);
 			if (e!= null){
 				addEnemy(e);
+				//when added set it null in the list
 				getEnemiesToAdd().set(counter-WAIT, null);
 			}
 			counter++;
@@ -279,7 +281,7 @@ public class Map {
 					t.removeNeighbour(prev);
 				}
 				
-				//toroljuk az elozot
+				//delete the previous
 				prev=null;
 				
 				listener.onMapAction(s);
@@ -402,6 +404,7 @@ public class Map {
 		}
 	}
 
+	//upgrades a tower based on x,y coordinates
 	public void upgradeTower(int x, int y) {
 		Tile tile = map.get(x * size + y);
 		if (tile instanceof Field)
@@ -421,8 +424,10 @@ public class Map {
 	public List<Enemy> getEnemiesToAdd() {
 		return enemiesToAdd;
 	}
-
+	
+	//sets the list of enemies to be spawned
 	public void setEnemiesToAdd(List<Enemy> enemiesToAdd) {
+		//reset the counter
 		counter=0;
 		this.enemiesToAdd = enemiesToAdd;
 	}

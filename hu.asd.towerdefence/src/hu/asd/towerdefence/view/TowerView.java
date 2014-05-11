@@ -15,7 +15,6 @@ import hu.asd.towerdefence.Tower;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,15 +24,20 @@ import javax.imageio.ImageIO;
 @SuppressWarnings("serial")
 public class TowerView extends Component {
 
+	//the displayed tower
 	private Tower tower;
+	
+	//basic images
 	private BufferedImage defImage;
 	private BufferedImage spdImage;
 	private BufferedImage dmgImage;
 
+	//images in fog
 	private BufferedImage defFog;
 	private BufferedImage spdFog;
 	private BufferedImage dmgFog;
 
+	//coordinates
 	private int x;
 	private int y;
 
@@ -51,6 +55,7 @@ public class TowerView extends Component {
 		File fspd = new File("img/spd_fog.png");
 
 		try {
+			//read the files and store the images
 			defImage = ImageIO.read(def);
 			dmgImage = ImageIO.read(dmg);
 			spdImage = ImageIO.read(spd);
@@ -60,7 +65,6 @@ public class TowerView extends Component {
 			spdFog = ImageIO.read(fspd);
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -68,6 +72,8 @@ public class TowerView extends Component {
 
 	@Override
 	public void paint(Graphics g) {
+		
+		//if in fog draw the foggy images
 		if (tower.isInFog()) {
 			if (getTower() instanceof DefTower)
 				g.drawImage(defFog, x, y, null);
@@ -76,6 +82,7 @@ public class TowerView extends Component {
 			else if (getTower() instanceof SpdTower)
 				g.drawImage(spdFog, x, y, null);
 		} else {
+			//else the normal ones
 			if (getTower() instanceof DefTower)
 				g.drawImage(defImage, x, y, null);
 			else if (getTower() instanceof DmgTower)
@@ -86,11 +93,13 @@ public class TowerView extends Component {
 
 	}
 
+	//set the coordinates to draw at
 	public void setCoords(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 
+	//getter and setter for the tower reference
 	public Tower getTower() {
 		return tower;
 	}
