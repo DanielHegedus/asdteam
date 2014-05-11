@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 
 public class Map {
 
-	private static final int WAIT = 0;
+	private static final int WAIT = 10;
 	private Gem gem;
 	private Mordor mordor;
 	private List<Tile> map;
